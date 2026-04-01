@@ -1,0 +1,20 @@
+.wrap {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 40px 0 16px;
+}
+.arrow, .page {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; font-weight: 500; color: var(--text-mid);
+  transition: var(--transition);
+  border: 1.5px solid transparent;
+}
+.arrow:hover:not(:disabled), .page:hover {
+  border-color: var(--green-500); color: var(--green-700);
+}
+.arrow:disabled { opacity: .35; cursor: not-allowed; }
+.active {
+  background: var(--green-900) !important; color: white !important;
+  border-color: var(--green-900) !important;
+}
+.dots { color: var(--text-light); padding: 0 4px; }

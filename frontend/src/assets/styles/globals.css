@@ -1,0 +1,132 @@
+/* ── Design Tokens ─────────────────────────────────── */
+:root {
+  --green-900: #0C3B2E;
+  --green-700: #1a5c47;
+  --green-500: #6D9773;
+  --green-300: #a8c5ae;
+  --green-100: #eaf2ec;
+  --orange:    #B46617;
+  --orange-lt: #d47c28;
+  --yellow:    #FFBA00;
+  --yellow-lt: #ffd255;
+  --bg:        #faf9f6;
+  --bg-card:   #ffffff;
+  --text-dark: #1a1a1a;
+  --text-mid:  #4a4a4a;
+  --text-light: #888;
+  --border:    #e8e3db;
+  --shadow-sm: 0 2px 8px rgba(12,59,46,.07);
+  --shadow-md: 0 6px 24px rgba(12,59,46,.10);
+  --shadow-lg: 0 16px 48px rgba(12,59,46,.14);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --transition:   all .25s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+input, select, textarea { font-family: inherit; }
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--green-300); border-radius: 3px; }
+
+/* ── Utility classes ───────────────────────────────── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-sm { padding: 48px 0; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: 100px;
+  font-size: .9rem; font-weight: 500; letter-spacing: .03em;
+  transition: var(--transition);
+}
+.btn-primary {
+  background: var(--green-900); color: white;
+}
+.btn-primary:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-outline {
+  border: 1.5px solid var(--green-900); color: var(--green-900);
+}
+.btn-outline:hover { background: var(--green-900); color: white; }
+
+.btn-orange {
+  background: var(--orange); color: white;
+}
+.btn-orange:hover { background: var(--orange-lt); transform: translateY(-1px); }
+
+.btn-ghost {
+  color: var(--text-mid); padding: 8px 16px;
+}
+.btn-ghost:hover { background: var(--green-100); color: var(--green-900); }
+
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 100px;
+  font-size: .75rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase;
+}
+.badge-green { background: var(--green-100); color: var(--green-700); }
+.badge-orange { background: #fef3e2; color: var(--orange); }
+.badge-yellow { background: #fffbe6; color: #a07500; }
+
+/* ── Skeleton ──────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #f0ede8 25%, #e8e4dd 50%, #f0ede8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Card ──────────────────────────────────────────── */
+.card {
+  background: var(--bg-card); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm); overflow: hidden;
+  transition: var(--transition);
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+/* ── Form elements ─────────────────────────────────── */
+.input {
+  width: 100%; padding: 12px 16px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-size: .9rem; color: var(--text-dark); background: white;
+  transition: var(--transition); outline: none;
+}
+.input:focus { border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(109,151,115,.15); }
+.input::placeholder { color: var(--text-light); }
+
+.label {
+  display: block; font-size: .85rem; font-weight: 500;
+  color: var(--text-mid); margin-bottom: 6px;
+}
+
+/* ── Page transitions ──────────────────────────────── */
+.page-enter { animation: fadeUp .35s ease forwards; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Toast override ────────────────────────────────── */
+.toast-container { z-index: 9999 !important; }

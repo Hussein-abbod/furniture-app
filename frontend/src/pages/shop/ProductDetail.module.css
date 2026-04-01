@@ -1,0 +1,72 @@
+.page { padding: 120px 0 80px; min-height: 100vh; }
+.back {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .88rem; color: var(--text-mid); margin-bottom: 40px;
+  transition: var(--transition);
+}
+.back:hover { color: var(--green-700); }
+
+.grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: start;
+}
+.imageWrap {
+  position: relative; border-radius: var(--radius-lg);
+  overflow: hidden; aspect-ratio: 1; box-shadow: var(--shadow-lg);
+}
+.image { width: 100%; height: 100%; object-fit: cover; }
+.soldOut {
+  position: absolute; top: 20px; right: 20px;
+  background: #dc2626; color: white;
+  padding: 6px 16px; border-radius: 100px; font-size: .82rem; font-weight: 600;
+}
+.imgSkeleton { aspect-ratio: 1; border-radius: var(--radius-lg); width: 100%; }
+
+.info { display: flex; flex-direction: column; gap: 20px; }
+.infoSkeleton { display: flex; flex-direction: column; gap: 16px; padding-top: 20px; }
+.line { height: 20px; border-radius: 4px; }
+
+.meta { display: flex; gap: 8px; }
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400;
+  color: var(--green-900); line-height: 1.15;
+}
+.price {
+  font-size: 2rem; font-weight: 700; color: var(--orange);
+  letter-spacing: -.02em;
+}
+.description {
+  font-size: .97rem; color: var(--text-mid); line-height: 1.8;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+
+.details { display: flex; flex-direction: column; gap: 12px; }
+.detail {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .9rem; color: var(--text-mid);
+}
+.detail svg { color: var(--green-500); flex-shrink: 0; }
+.detailLabel { color: var(--text-light); width: 90px; flex-shrink: 0; }
+.detailValue { color: var(--text-dark); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.inStock { color: #16a34a; }
+.outStock { color: #dc2626; }
+
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.trust {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--green-100); border-radius: var(--radius-sm);
+  padding: 16px 20px;
+}
+.trustItem {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .85rem; color: var(--green-700);
+}
+.trustItem svg { color: var(--green-500); flex-shrink: 0; }
+
+.error { text-align: center; padding: 80px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; gap: 32px; }
+}

@@ -1,0 +1,12 @@
+.card {
+  background: white; border-radius: var(--radius-md);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.image { height: 220px; width: 100%; }
+.body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.cat { height: 12px; width: 60px; }
+.title { height: 18px; width: 85%; }
+.titleSm { height: 18px; width: 55%; }
+.footer { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.price { height: 20px; width: 70px; }
+.btn { height: 34px; width: 70px; border-radius: 100px; }
