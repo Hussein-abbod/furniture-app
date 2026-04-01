@@ -1,31 +1,60 @@
-import { createContext, useContext, useState, useCallback } from 'react';
-import { login as apiLogin } from '../utils/api';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { login as apiLogin, logout as apiLogout, getMe } from '../utils/api';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [admin, setAdmin] = useState(() => {
-    const stored = localStorage.getItem('admin_user');
-    return stored ? JSON.parse(stored) : null;
-  });
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check cookie session on mount
+  useEffect(() => {
+    getMe()
+      .then(({ data }) => {
+        if (data.isAuthenticated) {
+          setUser({ username: data.username, email: data.email });
+          setRole(data.role); // 'admin' or 'user'
+        }
+      })
+      .catch(() => {
+         // Not authenticated
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const loginFn = useCallback(async (username, password) => {
     const { data } = await apiLogin(username, password);
-    localStorage.setItem('admin_token', data.access_token);
-    localStorage.setItem('admin_user', JSON.stringify({ id: data.admin_id, username: data.username }));
-    setAdmin({ id: data.admin_id, username: data.username });
+    setUser({ username: data.username, email: data.email });
+    setRole(data.role);
     return data;
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
-    setAdmin(null);
+  const logout = useCallback(async () => {
+    try {
+      await apiLogout();
+    } catch (e) {
+      console.error(e);
+    }
+    setUser(null);
+    setRole(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ admin, login: loginFn, logout, isAuthenticated: !!admin }}>
-      {children}
+    <AuthContext.Provider value={{
+      user,
+      role,
+      isAuthenticated: !!user,
+      isAdmin: role === 'admin',
+      isUser: role === 'user',
+      login: loginFn,
+      logout,
+      setUser,
+      loading
+    }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

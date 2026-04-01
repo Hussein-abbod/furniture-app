@@ -34,6 +34,7 @@
 .filterToggle { white-space: nowrap; }
 
 .layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+.main { min-height: 80vh; display: flex; flex-direction: column; } /* Increased min-height */
 
 .sidebar {
   background: white; border-radius: var(--radius-md);
@@ -67,6 +68,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  animation: fadeIn 0.4s ease-out; /* Smooth transition */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .empty {

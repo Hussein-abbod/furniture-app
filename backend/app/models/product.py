@@ -26,5 +26,6 @@ class Product(Base):
     category = Column(String(100), nullable=False, index=True)
     stock = Column(Integer, default=0, nullable=False)
     is_featured = Column(Integer, default=0)  # 0 or 1
+    total_sold = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

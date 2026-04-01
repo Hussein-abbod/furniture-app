@@ -3,26 +3,27 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, Package, Plus, LogOut,
-  Menu, X, ChevronRight
+  Menu, X, ChevronRight, ClipboardList
 } from 'lucide-react';
 import onyxLogo from '../../assets/images/onyx-logo.png';
 import styles from './AdminLayout.module.css';
 
 const NAV = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/admin/orders',    icon: ClipboardList,   label: 'Orders' },
   { to: '/admin/products',  icon: Package,         label: 'Products' },
-  { to: '/admin/products/new', icon: Plus,          label: 'Add Product' },
+  { to: '/admin/products/new', icon: Plus,         label: 'Add Product' },
 ];
 
 export default function AdminLayout() {
-  const { admin, logout } = useAuth();
+  const { user: admin, logout } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
   };
 
   return (

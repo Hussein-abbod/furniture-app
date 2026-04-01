@@ -5,10 +5,9 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Inject auth token
+// Inject auth config
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('admin_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  config.withCredentials = true;
   return config;
 });
 
@@ -17,10 +16,14 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
-      if (window.location.pathname.startsWith('/admin') && window.location.pathname !== '/admin/login') {
-        window.location.href = '/admin/login';
+      // Avoid redirecting if we're just checking /auth/me or already on login pages
+      const isAuthCheck = err.config.url.includes('/auth/me');
+      const isLoginPage = window.location.pathname.includes('/login');
+      if (!isAuthCheck && !isLoginPage) {
+         // Determine if admin or shop, then redirect
+         if (window.location.pathname.startsWith('/admin')) {
+             window.location.href = '/admin/login';
+         }
       }
     }
     return Promise.reject(err);
@@ -30,6 +33,13 @@ api.interceptors.response.use(
 // ── Auth ─────────────────────────────────────────────
 export const login = (username, password) =>
   api.post('/auth/login', { username, password });
+export const signup = (data) => api.post('/auth/signup', data);
+export const logout = () => api.post('/auth/logout');
+export const getMe = () => api.get('/auth/me');
+
+// ── Users ─────────────────────────────────────────────
+export const getProfile = () => api.get('/users/profile');
+export const updateProfile = (data) => api.put('/users/profile', data);
 
 // ── Products ─────────────────────────────────────────
 export const getProducts = (params) => api.get('/products', { params });
@@ -49,5 +59,23 @@ export const uploadImage = (file) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+// ── Cart ──────────────────────────────────────────────
+export const getCart = () => api.get('/cart');
+export const addToCart = (productId, quantity = 1) => api.post('/cart', { product_id: parseInt(productId), quantity });
+export const updateCartItem = (itemId, quantity) => api.put(`/cart/${itemId}`, { quantity });
+export const removeCartItem = (itemId) => api.delete(`/cart/${itemId}`);
+
+// ── Favorites ─────────────────────────────────────────
+export const getFavorites = () => api.get('/favorites');
+export const toggleFavorite = (productId) => api.post('/favorites', { product_id: parseInt(productId) });
+export const removeFavorite = (favoriteId) => api.delete(`/favorites/${favoriteId}`);
+
+// ── Orders ────────────────────────────────────────────
+export const checkout = (data) => api.post('/orders/checkout', data);
+export const getMyOrders = () => api.get('/orders');
+export const getOrder = (id) => api.get(`/orders/${id}`);
+export const getAllOrdersAdmin = () => api.get('/orders/admin');
+export const updateOrderStatus = (id, status) => api.put(`/orders/admin/${id}/status`, { status });
 
 export default api;

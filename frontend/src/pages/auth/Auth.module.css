@@ -1,0 +1,113 @@
+.container {
+  min-height: calc(100vh - 80px); /* 80px navbar offset */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f7f9f7;
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(12, 59, 46, 0.08);
+  padding: 2.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  color: #0C3B2E;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  color: #0C3B2E;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.formGroup input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #6D9773;
+  box-shadow: 0 0 0 3px rgba(109, 151, 115, 0.1);
+}
+
+.strengthText {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: -0.25rem;
+  text-align: right;
+}
+
+.submitBtn {
+  margin-top: 1rem;
+  background: #0C3B2E;
+  color: white;
+  border: none;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #145844;
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.footerLink {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.footerLink a {
+  color: #B46617;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footerLink a:hover {
+  text-decoration: underline;
+}

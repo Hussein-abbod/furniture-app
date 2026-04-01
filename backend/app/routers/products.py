@@ -152,14 +152,23 @@ async def get_stats(
     db: Session = Depends(get_db),
     _admin: Admin = Depends(get_current_admin),
 ):
+    from ..models.order import Order
+
     total_products = db.query(func.count(Product.id)).scalar()
     total_stock = db.query(func.sum(Product.stock)).scalar() or 0
     categories = db.query(Product.category, func.count(Product.id)).group_by(Product.category).all()
     low_stock = db.query(Product).filter(Product.stock <= 5).count()
+
+    total_orders = db.query(func.count(Order.id)).scalar() or 0
+    total_revenue = db.query(func.sum(Order.total_amount)).scalar() or 0
+    total_sales = db.query(func.sum(Product.total_sold)).scalar() or 0
 
     return {
         "total_products": total_products,
         "total_stock": total_stock,
         "categories": [{"name": c[0], "count": c[1]} for c in categories],
         "low_stock_count": low_stock,
+        "total_orders": total_orders,
+        "total_revenue": total_revenue,
+        "total_sales": total_sales,
     }

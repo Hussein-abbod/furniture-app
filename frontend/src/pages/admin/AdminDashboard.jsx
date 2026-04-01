@@ -39,14 +39,21 @@ export default function AdminDashboard() {
           label="Total Products"
           value={statsLoading ? '…' : stats?.total_products}
           color="var(--green-700)"
-          sub="In catalogue"
+          sub={`${stats?.total_stock?.toLocaleString() || 0} units available`}
+        />
+        <StatCard
+          icon={BarChart2}
+          label="Total Revenue"
+          value={statsLoading ? '…' : `$${stats?.total_revenue?.toLocaleString() || 0}`}
+          color="var(--orange)"
+          sub="All time revenue"
         />
         <StatCard
           icon={Layers}
-          label="Total Stock"
-          value={statsLoading ? '…' : stats?.total_stock?.toLocaleString()}
-          color="var(--orange)"
-          sub="Units available"
+          label="Total Orders"
+          value={statsLoading ? '…' : stats?.total_orders}
+          color="#3b82f6"
+          sub="Orders placed"
         />
         <StatCard
           icon={AlertTriangle}
@@ -54,13 +61,6 @@ export default function AdminDashboard() {
           value={statsLoading ? '…' : stats?.low_stock_count}
           color="#dc2626"
           sub="Items ≤ 5 units"
-        />
-        <StatCard
-          icon={BarChart2}
-          label="Categories"
-          value={statsLoading ? '…' : stats?.categories?.length}
-          color="var(--yellow)"
-          sub="Active categories"
         />
       </div>
 

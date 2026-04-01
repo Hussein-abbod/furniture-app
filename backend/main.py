@@ -7,7 +7,7 @@ from app.core.database import engine
 from app.core.config import settings
 from app.models import Admin, Product
 from app.core.database import Base
-from app.routers import auth, products
+from app.routers import auth, products, users, cart, favorites, orders
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -38,6 +38,10 @@ app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads"
 # Routers
 app.include_router(auth.router)
 app.include_router(products.router)
+app.include_router(users.router)
+app.include_router(cart.router)
+app.include_router(favorites.router)
+app.include_router(orders.router)
 
 
 @app.get("/api/health")

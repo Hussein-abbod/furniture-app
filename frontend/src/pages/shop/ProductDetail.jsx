@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Package, Tag, Layers, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Package, Tag, Layers, CheckCircle, XCircle, Heart } from 'lucide-react';
 import { getProduct } from '../../utils/api';
+import { useCart } from '../../context/CartContext';
+import { useFavorites } from '../../context/FavoritesContext';
 import styles from './ProductDetail.module.css';
 
 const FALLBACK = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900';
@@ -11,6 +13,9 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { addToCart } = useCart();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     setLoading(true);
@@ -47,6 +52,7 @@ export default function ProductDetail() {
   );
 
   const inStock = product.stock > 0;
+  const isFav = isFavorite(product.id);
 
   return (
     <div className={`${styles.page} page-enter`}>
@@ -102,10 +108,24 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <div className={styles.actions}>
-              <Link to="/products" className="btn btn-outline">
-                <ArrowLeft size={16} /> Continue Shopping
-              </Link>
+            <div className={styles.actions} style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <button 
+                className="btn btn-primary" 
+                disabled={!inStock}
+                onClick={() => addToCart(product.id, 1)}
+                style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center' }}
+              >
+                <Package size={18} /> {inStock ? 'Add to Cart' : 'Sold Out'}
+              </button>
+              
+              <button 
+                className="btn btn-outline" 
+                onClick={() => toggleFavorite(product.id)}
+                style={{ padding: '0 1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                <Heart size={20} fill={isFav ? '#B46617' : 'none'} color={isFav ? '#B46617' : '#333'} />
+              </button>
             </div>
 
             {/* Trust badges */}

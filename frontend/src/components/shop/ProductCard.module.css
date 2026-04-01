@@ -57,3 +57,29 @@
 .viewBtn {
   font-size: .8rem; padding: 8px 18px;
 }
+
+.favBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+  transition: all 0.2s;
+}
+
+.favBtn:hover {
+  transform: scale(1.1);
+}
+
+.favActive {
+  background: #fff;
+}

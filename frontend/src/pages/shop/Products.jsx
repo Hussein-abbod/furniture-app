@@ -20,14 +20,20 @@ export default function Products() {
     featured: searchParams.get('featured') === 'true' ? true : undefined,
   });
 
-  // Sync URL params
+  // Sync URL params & Scroll to top
   useEffect(() => {
     const p = {};
     if (params.category) p.category = params.category;
     if (params.search) p.search = params.search;
     if (params.featured) p.featured = 'true';
     setSearchParams(p, { replace: true });
-  }, [params.category, params.search, params.featured]);
+    
+    // Smooth scroll to results top when filters or page change
+    const header = document.querySelector(`.${styles.header}`);
+    if (header) {
+      header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [params.category, params.search, params.featured, params.page]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -72,10 +78,6 @@ export default function Products() {
             </div>
             <button type="submit" className="btn btn-primary">Search</button>
           </form>
-
-          <button className={`btn btn-outline ${styles.filterToggle}`} onClick={() => setShowFilters(o => !o)}>
-            <SlidersHorizontal size={16} /> Filters {hasFilters ? '●' : ''}
-          </button>
         </div>
 
         <div className={styles.layout}>

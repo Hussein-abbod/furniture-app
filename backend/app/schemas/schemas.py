@@ -8,6 +8,11 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+class SignupRequest(BaseModel):
+    full_name: str = Field(..., min_length=1, max_length=150)
+    email: str
+    password: str = Field(..., min_length=6)
+
 
 class Token(BaseModel):
     access_token: str
@@ -70,6 +75,83 @@ class AdminResponse(BaseModel):
     username: str
     email: Optional[str] = None
     created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+# ── User Schemas ──────────────────────────────────────────────────
+class UserProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    avatar_url: Optional[str] = None
+
+class UserResponse(BaseModel):
+    id: int
+    full_name: Optional[str]
+    email: str
+    avatar_url: Optional[str]
+    is_active: bool
+    created_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+# ── Cart Schemas ──────────────────────────────────────────────────
+class CartItemCreate(BaseModel):
+    product_id: int
+    quantity: int = Field(default=1, gt=0)
+
+class CartItemUpdate(BaseModel):
+    quantity: int = Field(..., gt=0)
+
+class CartItemResponse(BaseModel):
+    id: int
+    product_id: int
+    quantity: int
+    added_at: Optional[datetime]
+    product: ProductResponse
+
+    class Config:
+        from_attributes = True
+
+# ── Favorite Schemas ───────────────────────────────────────────────
+class FavoriteCreate(BaseModel):
+    product_id: int
+
+class FavoriteResponse(BaseModel):
+    id: int
+    product_id: int
+    added_at: Optional[datetime]
+    product: ProductResponse
+
+    class Config:
+        from_attributes = True
+
+# ── Order Schemas ──────────────────────────────────────────────────
+class CheckoutRequest(BaseModel):
+    address: str
+    city: str
+    country: str
+
+class OrderItemResponse(BaseModel):
+    id: int
+    product_id: int
+    quantity: int
+    unit_price: float
+    category: Optional[str]
+    product: ProductResponse
+
+    class Config:
+        from_attributes = True
+
+class OrderResponse(BaseModel):
+    id: int
+    user_id: int
+    total_amount: float
+    status: str
+    created_at: Optional[datetime]
+    items: List[OrderItemResponse] = []
 
     class Config:
         from_attributes = True
