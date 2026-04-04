@@ -15,12 +15,12 @@ export default function ShopLayout() {
   }, [pathname, search]); // Added search to handle category filter changes too
 
   return (
-    <>
+    <div className="shop-layout">
       <Navbar />
-      <main>
+      <main className="shop-main">
         <Outlet />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
