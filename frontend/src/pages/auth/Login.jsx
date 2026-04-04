@@ -54,6 +54,9 @@ export default function Login() {
             <img src={logo} alt="Onyx Logo" className={styles.logo} />
             <span className={styles.brandName}>ONYX</span>
           </Link>
+          <div className={styles.titleDivider}>
+            <span>❖</span>
+          </div>
           <h2>Welcome Back</h2>
           <p>Sign in to your account</p>
         </div>

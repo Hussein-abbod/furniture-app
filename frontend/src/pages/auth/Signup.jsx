@@ -82,6 +82,9 @@ export default function Signup() {
             <img src={logo} alt="Onyx Logo" className={styles.logo} />
             <span className={styles.brandName}>ONYX</span>
           </Link>
+          <div className={styles.titleDivider}>
+            <span>❖</span>
+          </div>
           <h2>Create Account</h2>
           <p>Join Onyx for exclusive access</p>
         </div>

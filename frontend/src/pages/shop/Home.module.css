@@ -274,24 +274,23 @@
   50% { transform: translateY(8px); }
 }
 
-/* ═══════════════════════════════════════════════════════
-   PERKS
-   ═══════════════════════════════════════════════════════ */
-.perks { border-bottom: 1px solid var(--border); }
-.perksGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
+/*   ═══════════════════════════════════════════════════════ */
+.categoriesSection {
+  padding-top: 2rem !important; /* Adjust this value (1rem) to control the gap *below* the line */
 }
-.perk { display: flex; align-items: flex-start; gap: 16px; }
-.perkIcon {
-  width: 44px; height: 44px; flex-shrink: 0;
-  border-radius: 12px; background: var(--green-100);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--green-700);
+.categoriesSection h2 {
+  margin-top: 0 !important; /* Removes browser's default headline push-down */
 }
-.perk h4 { font-size: .9rem; font-weight: 600; color: var(--text-dark); }
-.perk p { font-size: .82rem; color: var(--text-light); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════════ */
+.perks { 
+  border-bottom: 1px solid var(--border);
+  padding-top: 1rem;
+  padding-bottom: 1rem; /* Adjust this value (1rem) to control the gap *above* the line */
+  margin-top: -1rem; 
+  position: relative;
+  z-index: 5;
+}
 
 /* ═══════════════════════════════════════════════════════
    SECTION HEADER
@@ -299,6 +298,9 @@
 .sectionHead {
   display: flex; align-items: center; gap: 16px;
   margin-bottom: 40px; flex-wrap: wrap;
+}
+.categorySectionHead {
+  margin-bottom: 20px; /* Reduced margin-bottom for tighter vertical spacing */
 }
 .sectionTitle {
   font-family: var(--font-display);
@@ -315,11 +317,20 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  /* Reduced margin-top (was implicit by section padding) */
 }
 .catCard {
   position: relative; overflow: hidden;
   border-radius: var(--radius-md); aspect-ratio: 4/3;
   display: block;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 1.9s ease-out, transform 1.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.catCard.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 .catCard img {
   width: 100%; height: 100%; object-fit: cover;
@@ -372,7 +383,6 @@
 
 @media (max-width: 1024px) {
   .productsGrid { grid-template-columns: repeat(3, 1fr); }
-  .perksGrid { grid-template-columns: repeat(2, 1fr); }
   .heroInner { gap: 40px; }
   .heroHeading { font-size: clamp(2.2rem, 5vw, 3.5rem); }
   .imgHero img { height: clamp(350px, 50vh, 550px); }
@@ -478,7 +488,6 @@
   }
   .categoriesGrid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .productsGrid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .perksGrid { grid-template-columns: 1fr; gap: 20px; }
   .sectionHead { margin-bottom: 24px; }
 }
 

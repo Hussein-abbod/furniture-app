@@ -6,6 +6,8 @@ import SkeletonCard from '../../components/ui/SkeletonCard';
 import styles from './Home.module.css';
 import Threads from '../../components/ui/Threads';
 import heroBg from '../../assets/images/handcrafted-wooden-decorative-sculpture.jpg';
+import FeaturesCarousel from '../../components/ui/FeaturesCarousel';
+import { useState, useEffect, useRef } from 'react';
 
 const CATEGORY_IMAGES = {
   'Living Room': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600',
@@ -26,6 +28,44 @@ const PERKS = [
 export default function Home() {
   const { products, loading } = useFeatured();
   const categories = useCategories();
+  
+  const [visibleCategories, setVisibleCategories] = useState(new Set());
+  const categoryRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let hasNew = false;
+        const newSet = new Set();
+        
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.dataset.index);
+            newSet.add(index);
+            hasNew = true;
+            observer.unobserve(entry.target);
+          }
+        });
+
+        if (hasNew) {
+          setVisibleCategories(prev => {
+            const updated = new Set(prev);
+            newSet.forEach(item => updated.add(item));
+            return updated;
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    // Copy the ref array so we don't hold the lock, standard practice
+    const elements = categoryRefs.current;
+    elements.forEach(el => {
+      if (el) observer.observe(el);
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -96,32 +136,28 @@ export default function Home() {
       </section>
 
       {/* Perks */}
-      <section className={`section-sm ${styles.perks}`}>
+      <section className={styles.perks}>
         <div className="container">
-          <div className={styles.perksGrid}>
-            {PERKS.map(({ Icon, title, desc }) => (
-              <div key={title} className={styles.perk}>
-                <div className={styles.perkIcon}><Icon size={22} /></div>
-                <div>
-                  <h4>{title}</h4>
-                  <p>{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FeaturesCarousel perks={PERKS} />
         </div>
       </section>
 
       {/* Categories */}
-      <section className="section">
+      <section className={`section ${styles.categoriesSection}`}>
         <div className="container">
-          <div className={styles.sectionHead}>
-
+          <div className={`${styles.sectionHead} ${styles.categorySectionHead}`}>
             <h2 className={styles.sectionTitle}>Shop by Category</h2>
           </div>
           <div className={styles.categoriesGrid}>
-            {(categories.length ? categories : Object.keys(CATEGORY_IMAGES)).slice(0, 6).map(cat => (
-              <Link key={cat} to={`/products?category=${encodeURIComponent(cat)}`} className={styles.catCard}>
+            {(categories.length ? categories : Object.keys(CATEGORY_IMAGES)).slice(0, 6).map((cat, idx) => (
+              <Link 
+                key={cat} 
+                ref={el => categoryRefs.current[idx] = el}
+                data-index={idx}
+                to={`/products?category=${encodeURIComponent(cat)}`} 
+                className={`${styles.catCard} ${visibleCategories.has(idx) ? styles.visible : ''}`}
+                style={{ transitionDelay: `${(idx % 3) * 0.1}s` }}
+              >
                 <img src={CATEGORY_IMAGES[cat] || CATEGORY_IMAGES['Living Room']} alt={cat} />
                 <div className={styles.catOverlay}>
                   <span>{cat}</span>

@@ -383,10 +383,11 @@
    ═══════════════════════════════════════════ */
 @media (max-width: 380px) {
   .logo span {
-    display: none;
+    font-size: 1.1rem;
+    letter-spacing: 0;
   }
 
   .logoImg {
-    height: 34px;
+    height: 28px;
   }
 }
