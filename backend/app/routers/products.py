@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, func
 from typing import Optional, List
-import os, uuid, shutil
+import os, uuid
 import aiofiles
 from ..core.database import get_db
 from ..core.security import get_current_admin

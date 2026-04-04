@@ -41,16 +41,4 @@ async def toggle_favorite(
     db.refresh(new_fav)
     return new_fav
 
-@router.delete("/{favorite_id}")
-async def remove_favorite(
-    favorite_id: int,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    fav = db.query(Favorite).filter(Favorite.id == favorite_id, Favorite.user_id == current_user.id).first()
-    if not fav:
-        raise HTTPException(status_code=404, detail="Favorite not found")
-    
-    db.delete(fav)
-    db.commit()
-    return {"status": "ok"}
+

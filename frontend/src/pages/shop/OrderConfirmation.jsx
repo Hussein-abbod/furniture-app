@@ -142,7 +142,6 @@ export default function OrderConfirmation() {
               <span>Order Total</span>
               <strong>${order.total_amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</strong>
             </div>
-            {/* We could add simulated shipping logic back if we saved it on the order model */}
           </div>
         </div>
       </div>

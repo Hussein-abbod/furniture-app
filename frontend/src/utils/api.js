@@ -73,7 +73,6 @@ export const removeCartItem = (itemId) => api.delete(`/cart/${itemId}`);
 // ── Favorites ─────────────────────────────────────────
 export const getFavorites = () => api.get('/favorites');
 export const toggleFavorite = (productId) => api.post('/favorites', { product_id: parseInt(productId) });
-export const removeFavorite = (favoriteId) => api.delete(`/favorites/${favoriteId}`);
 
 // ── Orders ────────────────────────────────────────────
 export const checkout = (data) => api.post('/orders/checkout', data);
