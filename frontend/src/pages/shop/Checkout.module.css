@@ -1,4 +1,4 @@
-.container {
+.pageContainer {
   padding-top: 3rem;
   padding-bottom: 5rem;
 }
@@ -55,6 +55,8 @@
   background: #fdfdfd;
   font-family: inherit;
   transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formGroup input:focus {
@@ -85,14 +87,17 @@
 }
 
 .submitBtn {
-  margin-top: 1.5rem;
-  padding: 1.25rem;
-  font-size: 1.1rem;
-  background: #B46617;
+  align-self: flex-start;
+  min-width: 280px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.1rem 2rem;
+  font-size: 1.05rem;
+  background: #537658 !important;
 }
 
 .submitBtn:hover {
-  background: #965311;
+  background: #6D9773 !important;
 }
 
 /* Review Section */
@@ -101,6 +106,8 @@
   padding: 2rem;
   border-radius: 16px;
   border: 1px solid #f0f0f0;
+  position: sticky;
+  top: 100px;
 }
 
 .itemsList {
@@ -119,6 +126,7 @@
   position: relative;
   width: 65px;
   height: 65px;
+  flex-shrink: 0;
 }
 
 .itemImageWrap img {
@@ -149,11 +157,15 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .itemName {
   font-weight: 500;
   color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .itemPrice {
@@ -182,13 +194,41 @@
   margin-bottom: 0;
 }
 
+/* ── Tablet ── */
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .reviewSection {
+    position: static;
+    order: -1;
+  }
 }
 
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .pageContainer {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .reviewSection {
+    padding: 1.25rem;
+  }
+  
+  .submitBtn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* ── Small screens ── */
 @media (max-width: 500px) {
   .rowGroup {
     grid-template-columns: 1fr;

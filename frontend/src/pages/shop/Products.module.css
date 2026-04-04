@@ -30,11 +30,28 @@
 .clearSearch {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   color: var(--text-light); display: flex; align-items: center;
+  background: none; border: none; cursor: pointer;
 }
-.filterToggle { white-space: nowrap; }
+.filterToggle {
+  white-space: nowrap;
+  display: none !important; /* Hidden on desktop */
+  align-items: center;
+  gap: 6px;
+}
+.filterToggleText { display: inline; } /* always visible on mobile */
+
+.searchBtn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.searchBtnIcon { display: none; } /* shown icon-only on small screens */
+.searchBtnText { display: inline; } /* hidden on smallest screens */
 
 .layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
-.main { min-height: 80vh; display: flex; flex-direction: column; } /* Increased min-height */
+.main { min-height: 80vh; display: flex; flex-direction: column; }
 
 .sidebar {
   background: white; border-radius: var(--radius-md);
@@ -48,6 +65,17 @@
 .filterHeader h3 { font-size: 1rem; font-weight: 600; color: var(--text-dark); }
 .clearBtn { font-size: .8rem; color: var(--orange); font-weight: 500; }
 .clearBtn:hover { text-decoration: underline; }
+
+/* Close button — only shown inside mobile drawer */
+.closeFiltersBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-mid);
+  padding: 4px;
+  margin-left: auto;
+}
 
 .filterGroup { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .filterGroup:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -68,7 +96,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  animation: fadeIn 0.4s ease-out; /* Smooth transition */
+  animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
@@ -85,19 +113,81 @@
 .empty h3 { font-size: 1.3rem; font-weight: 600; color: var(--text-dark); }
 .empty p { color: var(--text-light); }
 
-@media (max-width: 1024px) {
+/* ── Large tablet ── */
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 220px 1fr; }
   .grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Tablet / phablet ── */
 @media (max-width: 768px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar {
-    display: none; position: fixed; inset: 0; z-index: 200;
-    border-radius: 0; overflow-y: auto;
+  .page { padding: 90px 0 60px; }
+
+  /* Show filter toggle button on mobile */
+  .filterToggle {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
   }
-  .sidebar.sidebarOpen { display: block; }
+
+  .layout { grid-template-columns: 1fr; }
+
+  /* Sidebar becomes a fullscreen drawer */
+  .sidebar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    border-radius: 0;
+    overflow-y: auto;
+    padding-top: 80px;
+  }
+
+  .sidebar.sidebarOpen {
+    display: block;
+  }
+
+  /* Show the close button inside the drawer */
+  .closeFiltersBtn {
+    display: flex;
+  }
+
   .searchForm { max-width: 100%; }
-  .header { flex-direction: column; }
+  .header { flex-direction: column; align-items: stretch; }
+  .searchForm { margin-left: 0; }
 }
+
+/* ── Small mobile ── */
 @media (max-width: 480px) {
+  .page { padding: 80px 0 40px; }
+  .title { font-size: 1.75rem; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  /* Icon-only buttons to save space */
+  .searchBtnText { display: none; }
+  .searchBtnIcon { display: block; }
+
+  .filterToggleText { display: none; }
+
+  /* Make buttons square and compact */
+  .searchBtn {
+    padding: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+  }
+
+  .filterToggle {
+    padding: 0 !important;
+    width: 42px !important;
+    height: 42px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+  }
+}
+
+/* ── Very small ── */
+@media (max-width: 360px) {
   .grid { grid-template-columns: 1fr; }
 }

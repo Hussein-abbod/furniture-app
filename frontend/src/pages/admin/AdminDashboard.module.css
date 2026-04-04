@@ -103,6 +103,25 @@
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
   .twoCol { grid-template-columns: 1fr; }
 }
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .title { font-size: 1.5rem; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .statCard { padding: 16px; }
+  .statValue { font-size: 1.3rem; }
+
+  /* Make the product table horizontally scrollable */
+  .panel { overflow-x: auto; }
+  .tableHead,
+  .tableRow,
+  .tableRowSkeleton { min-width: 480px; }
+}
+@media (max-width: 480px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .statCard { padding: 14px; gap: 10px; }
+  .statIcon { width: 36px; height: 36px; border-radius: 10px; }
+  .statValue { font-size: 1.15rem; }
+  .statSub { display: none; }
+}
+@media (max-width: 360px) {
   .statsGrid { grid-template-columns: 1fr; }
 }

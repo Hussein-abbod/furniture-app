@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from sqlalchemy import desc
+from sqlalchemy.orm import joinedload
 from ..core.database import get_db
 from ..core.security import get_current_user, get_current_admin
 from ..models.user import User
@@ -37,7 +38,12 @@ async def checkout(
     new_order = Order(
         user_id=current_user.id,
         total_amount=total_amount,
-        status=OrderStatus.pending
+        status=OrderStatus.pending,
+        shipping_name=req.full_name,
+        shipping_address=req.address,
+        shipping_city=req.city,
+        shipping_country=req.country,
+        shipping_phone=req.phone
     )
     db.add(new_order)
     db.flush() # get id
@@ -64,7 +70,7 @@ async def checkout(
 
 @router.get("/admin", response_model=List[OrderResponse])
 async def get_all_orders(admin: Admin = Depends(get_current_admin), db: Session = Depends(get_db)):
-    orders = db.query(Order).order_by(desc(Order.created_at)).all()
+    orders = db.query(Order).options(joinedload(Order.user)).order_by(desc(Order.created_at)).all()
     return orders
 
 from pydantic import BaseModel

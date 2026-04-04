@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { checkout as apiCheckout } from '../../utils/api';
+import { checkout as apiCheckout, getProfile } from '../../utils/api';
 import toast from 'react-hot-toast';
 import styles from './Checkout.module.css';
 
@@ -9,12 +9,31 @@ export default function Checkout() {
   const { cartItems, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [form, setForm] = useState({
     name: '',
     address: '',
     city: '',
-    country: ''
+    country: '',
+    phone: ''
   });
+
+  useEffect(() => {
+    getProfile()
+      .then(({ data }) => {
+        setForm({
+          name: data.full_name || data.username || '',
+          address: data.address || '',
+          city: data.city || '',
+          country: data.country || '',
+          phone: data.phone || ''
+        });
+      })
+      .catch((err) => {
+        console.error('Failed to load profile', err);
+      })
+      .finally(() => setFetching(false));
+  }, []);
 
   // If cart is empty, user shouldn't be here
   if (cartItems.length === 0) {
@@ -34,9 +53,11 @@ export default function Checkout() {
       await new Promise(resolve => setTimeout(resolve, 800));
 
       const { data } = await apiCheckout({
+        full_name: form.name,
         address: form.address,
         city: form.city,
-        country: form.country
+        country: form.country,
+        phone: form.phone
       });
       
       clearCart();
@@ -49,8 +70,16 @@ export default function Checkout() {
     }
   };
 
+  if (fetching) {
+    return (
+      <div className={`container ${styles.pageContainer}`} style={{ textAlign: 'center', padding: '5rem' }}>
+        <p>Loading checkout details...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className={`container ${styles.container}`}>
+    <div className={`container ${styles.pageContainer}`}>
       <h1 className={styles.title}>Checkout</h1>
       
       <div className={styles.layout}>
@@ -65,7 +94,16 @@ export default function Checkout() {
                 required 
                 value={form.name} 
                 onChange={e => setForm({...form, name: e.target.value})}
-                placeholder="John Doe"
+                
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Phone Number</label>
+              <input 
+                type="tel" 
+                required 
+                value={form.phone} 
+                onChange={e => setForm({...form, phone: e.target.value})}
               />
             </div>
             <div className={styles.formGroup}>
@@ -75,7 +113,7 @@ export default function Checkout() {
                 required 
                 value={form.address} 
                 onChange={e => setForm({...form, address: e.target.value})}
-                placeholder="123 Main St"
+                
               />
             </div>
             <div className={styles.rowGroup}>
@@ -86,7 +124,7 @@ export default function Checkout() {
                   required 
                   value={form.city} 
                   onChange={e => setForm({...form, city: e.target.value})}
-                  placeholder="New York"
+                  
                 />
               </div>
               <div className={styles.formGroup}>
@@ -96,7 +134,7 @@ export default function Checkout() {
                   required 
                   value={form.country} 
                   onChange={e => setForm({...form, country: e.target.value})}
-                  placeholder="United States"
+                  
                 />
               </div>
             </div>
@@ -105,7 +143,7 @@ export default function Checkout() {
               <h3>Payment Method</h3>
               <div className={styles.paymentBox}>
                 <input type="radio" checked readOnly />
-                <span>Pay on Delivery (Simulated)</span>
+                <span>Pay on Delivery</span>
               </div>
             </div>
 

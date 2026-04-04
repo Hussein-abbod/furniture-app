@@ -107,4 +107,7 @@
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr; }
   .twoFields { grid-template-columns: 1fr; }
+  .section { padding: 20px 16px; }
+  .formFooter { padding: 16px; flex-direction: column; align-items: stretch; }
+  .formFooter button { width: 100%; justify-content: center; }
 }

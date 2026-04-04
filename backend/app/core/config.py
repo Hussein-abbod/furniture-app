@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     UPLOAD_DIR: str = "uploads"
     MAX_FILE_SIZE: int = 5 * 1024 * 1024  # 5MB
+    GOOGLE_CLIENT_ID: Optional[str] = None
 
     class Config:
         env_file = ".env"

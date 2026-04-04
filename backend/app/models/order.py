@@ -17,6 +17,11 @@ class Order(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     total_amount = Column(Float, nullable=False)
     status = Column(SQLEnum(OrderStatus), default=OrderStatus.pending, nullable=False)
+    shipping_name = Column(String(255), nullable=True)
+    shipping_address = Column(String(255), nullable=True)
+    shipping_city = Column(String(100), nullable=True)
+    shipping_country = Column(String(100), nullable=True)
+    shipping_phone = Column(String(50), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User")

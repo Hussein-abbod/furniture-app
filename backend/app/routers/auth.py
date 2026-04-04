@@ -6,8 +6,12 @@ from ..core.cookies import set_auth_cookie, clear_auth_cookie
 from ..core.rate_limit import rate_limit_login
 from ..models.admin import Admin
 from ..models.user import User
-from ..schemas.schemas import LoginRequest, SignupRequest
-
+from ..schemas.schemas import LoginRequest, SignupRequest, GoogleLoginRequest
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from ..core.config import settings
+import string
+import secrets
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 @router.post("/login")
@@ -38,6 +42,70 @@ async def login(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid username/email or password",
     )
+
+@router.post("/google")
+async def google_login(
+    request: GoogleLoginRequest,
+    response: Response,
+    db: Session = Depends(get_db)
+):
+    try:
+        if not settings.GOOGLE_CLIENT_ID:
+            raise HTTPException(status_code=500, detail="Google Client ID is not configured on the server.")
+            
+        # Verify the token
+        idinfo = id_token.verify_oauth2_token(
+            request.token, 
+            google_requests.Request(), 
+            settings.GOOGLE_CLIENT_ID
+        )
+        
+        # Check issuer
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise ValueError('Wrong issuer.')
+
+        email = idinfo.get('email')
+        if not email:
+            raise ValueError('Email not found in token')
+            
+        full_name = idinfo.get('name', '')
+        
+        # Admin Google Auth check (optional, but good to prevent admin impersonation through normal table)
+        admin = db.query(Admin).filter(Admin.username == email).first()
+        if admin:
+            # If they are actually an admin, we could log them in as admin, 
+            # but let's just raise error to use password to be safe
+            raise HTTPException(status_code=400, detail="Admins must login with password")
+
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            # Create user with strong random password
+            alphabet = string.ascii_letters + string.digits
+            random_password = ''.join(secrets.choice(alphabet) for i in range(32))
+            hashed_pw = get_password_hash(random_password)
+            
+            user = User(
+                full_name=full_name,
+                email=email,
+                password_hash=hashed_pw
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            
+        if not user.is_active:
+            raise HTTPException(status_code=400, detail="Account is disabled")
+
+        token = create_access_token(data={"sub": user.email, "role": "user"})
+        set_auth_cookie(response, token)
+        return {"role": "user", "username": user.full_name, "email": user.email}
+        
+    except ValueError as e:
+        print(f"Google Token Verification Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token",
+        )
 
 @router.post("/signup")
 async def signup(request: SignupRequest, response: Response, db: Session = Depends(get_db)):

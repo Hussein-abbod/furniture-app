@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Search, Eye, AlertCircle, TrendingUp } from 'lucide-react';
+import { Package, Search, AlertCircle, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getAllOrdersAdmin, updateOrderStatus } from '../../utils/api';
 import styles from './AdminOrders.module.css';
@@ -83,14 +83,14 @@ export default function AdminOrders() {
                 <th>Date</th>
                 <th>Total</th>
                 <th>Status</th>
-                <th>Actions</th>
+
               </tr>
             </thead>
             <tbody>
               {loading
                 ? Array.from({ length: 5 }).map((_, i) => (
                     <tr key={i}>
-                      <td colSpan={6}>
+                      <td colSpan={5}>
                         <div className={`skeleton ${styles.skLine}`} style={{height: '24px'}} />
                       </td>
                     </tr>
@@ -98,7 +98,7 @@ export default function AdminOrders() {
                 : filteredOrders.length === 0
                   ? (
                     <tr>
-                      <td colSpan={6} className={styles.empty}>
+                      <td colSpan={5} className={styles.empty}>
                         <AlertCircle size={32} />
                         <span>No orders found</span>
                       </td>
@@ -109,7 +109,7 @@ export default function AdminOrders() {
                       <td className={styles.fw500}>#{o.id.toString().padStart(6, '0')}</td>
                       <td>
                         <div className={styles.customerCell}>
-                          <span>{o.shipping_name || `User ${o.user_id}`}</span>
+                          <span>{o.shipping_name || o.user?.full_name || o.user?.username || `User #${o.user_id}`}</span>
                           <span className={styles.subtext}>{o.shipping_city}, {o.shipping_country}</span>
                         </div>
                       </td>
@@ -128,13 +128,7 @@ export default function AdminOrders() {
                           <option value="delivered">Delivered</option>
                         </select>
                       </td>
-                      <td>
-                        {/* We don't have a dedicated admin order detail page yet, 
-                            so we just link to the public order invoice for reference */}
-                        <Link to={`/orders/${o.id}`} className={styles.actionBtn} title="View Invoice">
-                          <Eye size={16} />
-                        </Link>
-                      </td>
+
                     </tr>
                   ))
               }

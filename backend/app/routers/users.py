@@ -34,6 +34,15 @@ async def update_profile(
     if update_data.avatar_url is not None:
         current_user.avatar_url = update_data.avatar_url
 
+    if update_data.address is not None:
+        current_user.address = update_data.address
+    if update_data.city is not None:
+        current_user.city = update_data.city
+    if update_data.country is not None:
+        current_user.country = update_data.country
+    if update_data.phone is not None:
+        current_user.phone = update_data.phone
+
     db.commit()
     db.refresh(current_user)
     return current_user

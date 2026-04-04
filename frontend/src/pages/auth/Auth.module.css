@@ -1,9 +1,9 @@
 .container {
-  min-height: calc(100vh - 80px); /* 80px navbar offset */
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
   background-color: #f7f9f7;
 }
 
@@ -58,6 +58,8 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
   transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formGroup input:focus {
@@ -84,6 +86,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  width: 100%;
 }
 
 .submitBtn:hover:not(:disabled) {
@@ -110,4 +113,52 @@
 
 .footerLink a:hover {
   text-decoration: underline;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.divider::before {
+  margin-right: 0.75rem;
+}
+
+.divider::after {
+  margin-left: 0.75rem;
+}
+
+.googleBtnContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  .header h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .card {
+    padding: 1.25rem 1rem;
+  }
 }

@@ -13,6 +13,9 @@ class SignupRequest(BaseModel):
     email: str
     password: str = Field(..., min_length=6)
 
+class GoogleLoginRequest(BaseModel):
+    token: str
+
 
 class Token(BaseModel):
     access_token: str
@@ -85,12 +88,20 @@ class UserProfileUpdate(BaseModel):
     email: Optional[str] = None
     password: Optional[str] = None
     avatar_url: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    phone: Optional[str] = None
 
 class UserResponse(BaseModel):
     id: int
     full_name: Optional[str]
     email: str
     avatar_url: Optional[str]
+    address: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    phone: Optional[str] = None
     is_active: bool
     created_at: Optional[datetime]
 
@@ -130,9 +141,11 @@ class FavoriteResponse(BaseModel):
 
 # ── Order Schemas ──────────────────────────────────────────────────
 class CheckoutRequest(BaseModel):
+    full_name: str
     address: str
     city: str
     country: str
+    phone: str
 
 class OrderItemResponse(BaseModel):
     id: int
@@ -150,7 +163,13 @@ class OrderResponse(BaseModel):
     user_id: int
     total_amount: float
     status: str
+    shipping_name: Optional[str] = None
+    shipping_address: Optional[str] = None
+    shipping_city: Optional[str] = None
+    shipping_country: Optional[str] = None
+    shipping_phone: Optional[str] = None
     created_at: Optional[datetime]
+    user: Optional[UserResponse] = None
     items: List[OrderItemResponse] = []
 
     class Config:

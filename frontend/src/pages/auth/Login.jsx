@@ -3,15 +3,30 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from './Auth.module.css';
 import toast from 'react-hot-toast';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const data = await googleLogin(credentialResponse.credential);
+      toast.success(`Welcome back, ${data.username}!`);
+      const from = location.state?.from?.pathname || (data.role === 'admin' ? '/admin/dashboard' : '/');
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error('Google login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +53,7 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label>Email (or Admin Username)</label>
+            <label>Email</label>
             <input
               type="text"
               required
@@ -63,6 +78,23 @@ export default function Login() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        <div className={styles.divider}>
+          <span>OR</span>
+        </div>
+        
+        <div className={styles.googleBtnContainer}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              toast.error('Google login failed');
+            }}
+            useOneTap
+            theme="outline"
+            size="large"
+            width="100%"
+          />
+        </div>
 
         <p className={styles.footerLink}>
           Don't have an account? <Link to="/signup">Sign up</Link>

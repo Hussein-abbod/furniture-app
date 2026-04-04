@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -20,6 +20,11 @@ export default function AdminLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   const handleLogout = async () => {
     await logout();
@@ -28,14 +33,27 @@ export default function AdminLayout() {
 
   return (
     <div className={`${styles.layout} ${collapsed ? styles.collapsed : ''}`}>
+      {/* Mobile Backdrop */}
+      {mobileOpen && <div className={styles.backdrop} onClick={() => setMobileOpen(false)} />}
+      
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${mobileOpen ? styles.mobileOpen : ''}`}>
         <div className={styles.sidebarTop}>
           <Link to="/admin/dashboard" className={styles.logo}>
             <img src={onyxLogo} alt="ONYX Logo" className={styles.logoImg} />
             {!collapsed && <span>ONYX</span>}
           </Link>
-          <button className={styles.collapseBtn} onClick={() => setCollapsed(v => !v)}>
+          {/* Desktop collapse / Mobile close */}
+          <button 
+            className={styles.collapseBtn} 
+            onClick={() => {
+              if (window.innerWidth <= 768) {
+                setMobileOpen(false);
+              } else {
+                setCollapsed(v => !v);
+              }
+            }}
+          >
             {collapsed ? <ChevronRight size={16} /> : <X size={16} />}
           </button>
         </div>
@@ -73,7 +91,7 @@ export default function AdminLayout() {
       {/* Main content */}
       <main className={styles.main}>
         <div className={styles.topbar}>
-          <button className={styles.menuBtn} onClick={() => setCollapsed(v => !v)}>
+          <button className={styles.menuBtn} onClick={() => setMobileOpen(true)}>
             <Menu size={20} />
           </button>
           <div className={styles.topbarRight}>

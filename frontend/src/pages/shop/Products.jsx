@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Filter } from 'lucide-react';
 import { useProducts, useCategories } from '../../hooks/useProducts';
 import ProductCard from '../../components/shop/ProductCard';
 import SkeletonCard from '../../components/ui/SkeletonCard';
@@ -76,7 +76,14 @@ export default function Products() {
                 </button>
               )}
             </div>
-            <button type="submit" className="btn btn-primary">Search</button>
+            <button type="submit" className={`btn btn-primary ${styles.searchBtn}`}>
+              <Search size={16} className={styles.searchBtnIcon} />
+              <span className={styles.searchBtnText}>Search</span>
+            </button>
+            <button type="button" className={`btn btn-outline ${styles.filterToggle}`} onClick={() => setShowFilters(v => !v)}>
+              <Filter size={16} />
+              <span className={styles.filterToggleText}>Filters</span>
+            </button>
           </form>
         </div>
 
@@ -86,6 +93,9 @@ export default function Products() {
             <div className={styles.filterHeader}>
               <h3>Filters</h3>
               {hasFilters && <button className={styles.clearBtn} onClick={clearFilters}>Clear all</button>}
+              <button className={styles.closeFiltersBtn} onClick={() => setShowFilters(false)} aria-label="Close filters">
+                <X size={20} />
+              </button>
             </div>
 
             {/* Category */}

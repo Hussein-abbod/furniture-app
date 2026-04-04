@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import styles from './Auth.module.css';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Signup() {
   const [form, setForm] = useState({ full_name: '', email: '', password: '', confirm_password: '' });
@@ -12,8 +13,21 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-  const { setUser } = useAuth();
+  const { setUser, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const data = await googleLogin(credentialResponse.credential);
+      toast.success('Signed up successfully!');
+      window.location.href = '/';
+    } catch (err) {
+      toast.error('Google signup failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getPasswordStrength = (pass) => {
      if (pass.length === 0) return { label: '', color: 'transparent' };
@@ -141,6 +155,23 @@ export default function Signup() {
             {loading ? 'Creating...' : 'Sign Up'}
           </button>
         </form>
+
+        <div className={styles.divider}>
+          <span>OR</span>
+        </div>
+        
+        <div className={styles.googleBtnContainer}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              toast.error('Google signup failed');
+            }}
+            useOneTap
+            theme="outline"
+            size="large"
+            width="100%"
+          />
+        </div>
 
         <p className={styles.footerLink}>
           Already have an account? <Link to="/login">Sign in</Link>

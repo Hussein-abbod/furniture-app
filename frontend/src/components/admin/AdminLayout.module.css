@@ -91,5 +91,22 @@
     position: fixed; left: -240px; z-index: 200;
     width: 240px; transition: left .25s ease;
   }
+  .sidebar.mobileOpen {
+    left: 0;
+  }
   .menuBtn { display: flex; }
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 150;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

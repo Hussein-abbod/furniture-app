@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { FavoritesProvider } from './context/FavoritesContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // Layouts
 import ShopLayout from './components/shop/ShopLayout';
@@ -16,6 +17,7 @@ import ProductDetail from './pages/shop/ProductDetail';
 import Cart from './pages/shop/Cart';
 import Checkout from './pages/shop/Checkout';
 import OrderConfirmation from './pages/shop/OrderConfirmation';
+import About from './pages/shop/About';
 
 // Auth pages
 import Login from './pages/auth/Login';
@@ -34,71 +36,76 @@ import AdminProductForm from './pages/admin/AdminProductForm';
 import AdminOrders from './pages/admin/AdminOrders';
 
 export default function App() {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
   return (
-    <AuthProvider>
-      <CartProvider>
-        <FavoritesProvider>
-          <BrowserRouter>
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                style: {
-                  borderRadius: '12px',
-                  fontFamily: 'DM Sans, sans-serif',
-                  fontSize: '0.88rem',
-                },
-                success: { iconTheme: { primary: '#0C3B2E', secondary: '#fff' } },
-              }}
-            />
+    <GoogleOAuthProvider clientId={clientId}>
+      <AuthProvider>
+        <CartProvider>
+          <FavoritesProvider>
+            <BrowserRouter>
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  style: {
+                    borderRadius: '12px',
+                    fontFamily: 'DM Sans, sans-serif',
+                    fontSize: '0.88rem',
+                  },
+                  success: { iconTheme: { primary: '#0C3B2E', secondary: '#fff' } },
+                }}
+              />
 
-            <Routes>
-              {/* Auth */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/admin/login" element={<Navigate to="/login" replace />} />
+              <Routes>
+                {/* Auth */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/admin/login" element={<Navigate to="/login" replace />} />
 
-              {/* Public shop */}
-              <Route element={<ShopLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                
-                {/* User protected */}
-                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                <Route path="/orders/:id" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
+                {/* Public shop */}
+                <Route element={<ShopLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/about" element={<About />} />
+                  
+                  {/* User protected */}
+                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                  <Route path="/orders/:id" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
 
-                <Route path="/account" element={<ProtectedRoute><AccountLayout /></ProtectedRoute>}>
-                  <Route index element={<Navigate to="edit" replace />} />
-                  <Route path="edit" element={<EditProfile />} />
-                  <Route path="orders" element={<OrderHistory />} />
-                  <Route path="favorites" element={<Favorites />} />
+                  <Route path="/account" element={<ProtectedRoute><AccountLayout /></ProtectedRoute>}>
+                    <Route index element={<Navigate to="edit" replace />} />
+                    <Route path="edit" element={<EditProfile />} />
+                    <Route path="orders" element={<OrderHistory />} />
+                    <Route path="favorites" element={<Favorites />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              {/* Admin protected */}
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute requireAdmin={true}>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="dashboard" element={<AdminDashboard />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="products/new" element={<AdminProductForm />} />
-                <Route path="products/:id/edit" element={<AdminProductForm />} />
-                <Route path="orders" element={<AdminOrders />} />
-              </Route>
+                {/* Admin protected */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute requireAdmin={true}>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                  <Route path="dashboard" element={<AdminDashboard />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="products/new" element={<AdminProductForm />} />
+                  <Route path="products/:id/edit" element={<AdminProductForm />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                </Route>
 
-              {/* Catch-all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </BrowserRouter>
-        </FavoritesProvider>
-      </CartProvider>
-    </AuthProvider>
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </BrowserRouter>
+          </FavoritesProvider>
+        </CartProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }

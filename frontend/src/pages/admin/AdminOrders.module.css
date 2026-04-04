@@ -127,22 +127,7 @@
   cursor: pointer;
 }
 
-.actionBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: #f3f4f6;
-  color: #4b5563;
-  transition: all 0.2s;
-}
 
-.actionBtn:hover {
-  background: #e5e7eb;
-  color: #1f2937;
-}
 
 .empty {
   text-align: center;
@@ -157,4 +142,35 @@
 .skLine {
   height: 20px;
   border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .title { font-size: 1.5rem; }
+
+  .toolbar { flex-direction: column; }
+
+  .searchWrap { max-width: 100%; }
+
+  .table th, .table td {
+    padding: 12px 14px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table th, .table td {
+    padding: 10px 10px;
+    font-size: 0.78rem;
+  }
+
+  .statusSelect {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.4rem;
+  }
 }

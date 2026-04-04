@@ -4,6 +4,8 @@ import { useFeatured, useCategories } from '../../hooks/useProducts';
 import ProductCard from '../../components/shop/ProductCard';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import styles from './Home.module.css';
+import Threads from '../../components/ui/Threads';
+import heroBg from '../../assets/images/handcrafted-wooden-decorative-sculpture.jpg';
 
 const CATEGORY_IMAGES = {
   'Living Room': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600',
@@ -29,9 +31,17 @@ export default function Home() {
     <div className={styles.page}>
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={`container ${styles.heroInner}`}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <Threads
+            amplitude={1.6}
+            distance={0.2}
+            enableMouseInteraction={false}
+            color={[0.1, 0.4, 0.2]} /* Provide a slightly greener tint to match your brand */
+          />
+        </div>
+        <div className={`container ${styles.heroInner}`} style={{ position: 'relative', zIndex: 1 }}>
           <div className={styles.heroText}>
-            <span className="badge badge-green">New Collection 2025</span>
+
             <h1 className={styles.heroHeading}>
               Design Spaces<br/>
               <em>You'll Love</em>
@@ -59,12 +69,8 @@ export default function Home() {
           </div>
 
           <div className={styles.heroImages}>
-            <div className={styles.imgMain}>
-              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900" alt="Featured sofa" />
-            </div>
-            <div className={styles.imgStack}>
-              <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400" alt="Chair" />
-              <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400" alt="Table" />
+            <div className={styles.imgHero}>
+              <img src={heroBg} alt="Modern premium furniture" />
             </div>
           </div>
         </div>
@@ -96,7 +102,7 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <div className={styles.sectionHead}>
-            <span className="badge badge-green">Browse By Room</span>
+
             <h2 className={styles.sectionTitle}>Shop by Category</h2>
           </div>
           <div className={styles.categoriesGrid}>
@@ -109,26 +115,6 @@ export default function Home() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="section" style={{ background: 'var(--green-100)', marginTop: -1 }}>
-        <div className="container">
-          <div className={styles.sectionHead}>
-            <span className="badge badge-orange">Editor's Picks</span>
-            <h2 className={styles.sectionTitle}>Featured Collection</h2>
-            <Link to="/products?featured=true" className={`btn btn-ghost ${styles.seeAll}`}>
-              See all <ArrowRight size={15} />
-            </Link>
-          </div>
-
-          <div className={styles.productsGrid}>
-            {loading
-              ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-              : products.slice(0, 8).map(p => <ProductCard key={p.id} product={p} />)
-            }
           </div>
         </div>
       </section>
@@ -150,6 +136,27 @@ export default function Home() {
           </div>
         </div>
       </section>
+     
+      {/* Featured Products */}
+      <section className="section" style={{ background: 'var(--green-100)', marginTop: -1 }}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+
+            <h2 className={styles.sectionTitle}>Featured Collection</h2>
+            <Link to="/products?featured=true" className={`btn btn-ghost ${styles.seeAll}`}>
+              See all <ArrowRight size={15} />
+            </Link>
+          </div>
+
+          <div className={styles.productsGrid}>
+            {loading
+              ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+              : products.slice(0, 8).map(p => <ProductCard key={p.id} product={p} />)
+            }
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

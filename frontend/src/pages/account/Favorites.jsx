@@ -19,7 +19,7 @@ export default function Favorites() {
           <Link to="/products" className="btn btn-primary mt-4 inline-block">Discover Products</Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '2rem' }}>
+        <div className={styles.favGrid}>
           {favoriteItems.map(fav => (
             <ProductCard key={fav.product.id} product={fav.product} />
           ))}

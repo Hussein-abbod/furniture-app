@@ -10,6 +10,7 @@ export default function ProductCard({ product }) {
   const { isFavorite, toggleFavorite } = useFavorites();
 
   const isFav = isFavorite(id);
+  const outOfStock = stock === 0;
 
   const handleFavorite = (e) => {
     e.preventDefault();
@@ -18,41 +19,57 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${outOfStock ? styles.cardDisabled : ''}`}>
       <Link to={`/products/${id}`} className={styles.imageWrap}>
         <img
           src={image_url || FALLBACK}
           alt={name}
           onError={e => { e.target.src = FALLBACK; }}
           className={styles.image}
+          loading="lazy"
+          decoding="async"
         />
-        
-        {/* Actions inside image wrap */}
-        <button 
-          className={`${styles.favBtn} ${isFav ? styles.favActive : ''}`} 
+
+        {/* Favourite — always visible, tappable on mobile */}
+        <button
+          className={`${styles.favBtn} ${isFav ? styles.favActive : ''}`}
           onClick={handleFavorite}
+          aria-label={isFav ? 'Remove from favourites' : 'Add to favourites'}
         >
-          <Heart size={20} fill={isFav ? '#B46617' : 'none'} color={isFav ? '#B46617' : '#333'} />
+          <Heart size={18} fill={isFav ? '#B46617' : 'none'} color={isFav ? '#B46617' : '#555'} />
         </button>
 
-        <div className={styles.overlay}>
-          <Eye size={18} /> Quick View
+        {/* Quick-view overlay — desktop hover only */}
+        <div className={styles.overlay} aria-hidden="true">
+          <Eye size={18} />
+          <span className={styles.overlayText}>Quick View</span>
         </div>
-        
-        {stock <= 5 && stock > 0 && (
+
+        {/* Stock badges */}
+        {stock > 0 && stock <= 5 && (
           <span className={`${styles.badge} ${styles.badgeLow}`}>Low Stock</span>
         )}
-        {stock === 0 && (
+        {outOfStock && (
           <span className={`${styles.badge} ${styles.badgeOut}`}>Sold Out</span>
         )}
       </Link>
 
       <div className={styles.body}>
         <span className={styles.category}>{category}</span>
-        <Link to={`/products/${id}`} className={styles.name}>{name}</Link>
+        <Link to={`/products/${id}`} className={styles.name} title={name}>
+          {name}
+        </Link>
         <div className={styles.footer}>
-          <span className={styles.price}>${price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-          <Link to={`/products/${id}`} className={`btn btn-primary ${styles.viewBtn}`}>View</Link>
+          <span className={styles.price}>
+            ${price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+          </span>
+          <Link
+            to={`/products/${id}`}
+            className={`btn btn-primary ${styles.viewBtn}`}
+            aria-label={`View ${name}`}
+          >
+            View
+          </Link>
         </div>
       </div>
     </div>

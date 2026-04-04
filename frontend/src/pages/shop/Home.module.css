@@ -21,26 +21,40 @@
 .heroText { display: flex; flex-direction: column; gap: 20px; }
 .heroHeading {
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
   font-weight: 400; line-height: 1.1;
   color: var(--green-900);
 }
 .heroHeading em { font-style: italic; color: var(--orange); }
-.heroSub { font-size: 1.05rem; color: var(--text-mid); max-width: 420px; line-height: 1.8; }
+.heroSub { font-size: 1.05rem; color: var(--text-mid); max-width: 420px; line-height: 1.5; }
 .heroCtas { display: flex; gap: 12px; flex-wrap: wrap; }
 .heroStats {
   display: flex; gap: 32px; padding-top: 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border); flex-wrap: wrap;
 }
 .stat { display: flex; flex-direction: column; }
 .stat strong { font-size: 1.4rem; font-weight: 600; color: var(--green-900); }
 .stat span { font-size: .82rem; color: var(--text-light); }
 
-.heroImages { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
-.imgMain { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/5; }
-.imgMain img { width: 100%; height: 100%; object-fit: cover; }
-.imgStack { display: flex; flex-direction: column; gap: 16px; }
-.imgStack img { border-radius: var(--radius-md); aspect-ratio: 1; object-fit: cover; width: 100%; flex: 1; }
+.heroImages {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(12,59,46,.18), 0 0 0 1px rgba(255,255,255,.4);
+  align-self: center;
+}
+.imgHero {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.imgHero img {
+  width: 100%;
+  height: clamp(400px, 60vh, 750px);
+  object-fit: cover;
+  display: block;
+}
 
 .scrollHint {
   display: flex; flex-direction: column; align-items: center;
@@ -76,7 +90,7 @@
 }
 .sectionTitle {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.6rem); font-weight: 400;
   color: var(--green-900);
 }
 .seeAll { margin-left: auto; }
@@ -121,29 +135,42 @@
 .bannerText { display: flex; flex-direction: column; gap: 20px; }
 .bannerText h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
   font-weight: 400; color: white; line-height: 1.2;
 }
 .bannerText p { color: rgba(255,255,255,.7); font-size: 1rem; line-height: 1.7; }
 .bannerImg { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16/10; }
 .bannerImg img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Responsive */
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+  .productsGrid { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 1024px) {
   .productsGrid { grid-template-columns: repeat(3, 1fr); }
   .perksGrid { grid-template-columns: repeat(2, 1fr); }
+  .heroInner { gap: 40px; }
 }
 @media (max-width: 768px) {
-  .heroInner { grid-template-columns: 1fr; }
-  .heroImages { display: none; }
+  .heroInner { grid-template-columns: 1fr; gap: 32px; }
+  .hero { min-height: auto; padding-bottom: 40px; }
   .categoriesGrid { grid-template-columns: repeat(2, 1fr); }
   .productsGrid { grid-template-columns: repeat(2, 1fr); }
-  .bannerInner { grid-template-columns: 1fr; }
+  .bannerInner { grid-template-columns: 1fr; gap: 32px; }
   .bannerImg { display: none; }
+  .banner { padding: 60px 0; }
+  .scrollHint { display: none; }
 }
 @media (max-width: 480px) {
+  .categoriesGrid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .productsGrid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .perksGrid { grid-template-columns: 1fr; gap: 20px; }
+  .heroStats { gap: 20px; }
+  .heroCtas { flex-direction: column; align-items: flex-start; }
+  .heroCtas a { width: 100%; text-align: center; }
+  .sectionHead { margin-bottom: 24px; }
+}
+@media (max-width: 360px) {
   .categoriesGrid { grid-template-columns: 1fr; }
   .productsGrid { grid-template-columns: 1fr; }
-  .perksGrid { grid-template-columns: 1fr; }
-  .heroStats { gap: 20px; }
 }

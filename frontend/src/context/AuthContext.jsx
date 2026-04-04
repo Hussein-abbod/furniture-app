@@ -32,6 +32,14 @@ export function AuthProvider({ children }) {
     return data;
   }, []);
 
+  const googleLogin = useCallback(async (token) => {
+    const { loginWithGoogle } = await import('../utils/api');
+    const { data } = await loginWithGoogle(token);
+    setUser({ username: data.username, email: data.email });
+    setRole(data.role);
+    return data;
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await apiLogout();
@@ -50,6 +58,7 @@ export function AuthProvider({ children }) {
       isAdmin: role === 'admin',
       isUser: role === 'user',
       login: loginFn,
+      googleLogin,
       logout,
       setUser,
       loading
