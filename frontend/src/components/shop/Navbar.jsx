@@ -140,9 +140,6 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Link to="/cart" className={styles.iconBtn} aria-label="Cart">
-                  <ShoppingCart size={22} />
-                </Link>
                 <Link to="/login" className={`btn btn-primary ${styles.loginBtn}`}>
                   Sign In
                 </Link>
@@ -206,9 +203,6 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link to="/cart" className={styles.mobileLink}>
-                    <ShoppingCart size={18} /> Cart
-                  </Link>
                   <Link to="/login" className={styles.mobileLink}>
                     <User size={18} /> Sign In / Register
                   </Link>

@@ -78,7 +78,7 @@ export default function Signup() {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <Link to="/" className={styles.header}>
+          <Link to="/" className={styles.logoLink}>
             <img src={logo} alt="Onyx Logo" className={styles.logo} />
             <span className={styles.brandName}>ONYX</span>
           </Link>
