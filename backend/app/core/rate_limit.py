@@ -15,6 +15,11 @@ def rate_limit_login(request: Request):
     RATE_LIMIT_DURATION = 60  # seconds
     MAX_REQUESTS = 5
 
+    # Cleanup expired keys to prevent memory leak
+    expired_keys = [ip for ip, data in _rate_limits.items() if current_time - data[1] >= RATE_LIMIT_DURATION]
+    for ip in expired_keys:
+        del _rate_limits[ip]
+
     if client_ip in _rate_limits:
         req_count, window_start = _rate_limits[client_ip]
         if current_time - window_start < RATE_LIMIT_DURATION:

@@ -5,6 +5,7 @@ def set_auth_cookie(response: Response, token: str):
     """
     Sets the secure HttpOnly cookie for authentication.
     """
+    is_production = getattr(settings, "ENVIRONMENT", "development") == "production"
     response.set_cookie(
         key="access_token",
         value=token,
@@ -12,7 +13,7 @@ def set_auth_cookie(response: Response, token: str):
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         expires=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         samesite="lax",
-        secure=False, # Set to True in production (HTTPS)
+        secure=is_production,
     )
 
 def clear_auth_cookie(response: Response):

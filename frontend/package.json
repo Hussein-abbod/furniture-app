@@ -1,5 +1,5 @@
 {
-  "name": "maison-furniture-frontend",
+  "name": "ONYX-furniture-frontend",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -16,7 +16,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

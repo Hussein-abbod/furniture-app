@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, func
 from typing import Optional, List
 import os, uuid, shutil
+import aiofiles
 from ..core.database import get_db
 from ..core.security import get_current_admin
 from ..core.config import settings
@@ -141,8 +142,8 @@ async def upload_image(
     filename = f"{uuid.uuid4()}.{ext}"
     filepath = os.path.join(settings.UPLOAD_DIR, filename)
 
-    with open(filepath, "wb") as f:
-        f.write(content)
+    async with aiofiles.open(filepath, "wb") as f:
+        await f.write(content)
 
     return {"image_url": f"/uploads/{filename}"}
 
@@ -172,3 +173,53 @@ async def get_stats(
         "total_revenue": total_revenue,
         "total_sales": total_sales,
     }
+
+
+@router.get("/admin/chart-data")
+async def get_chart_data(
+    period: str = Query("month", regex="^(day|month|year)$"),
+    db: Session = Depends(get_db),
+    _admin: Admin = Depends(get_current_admin),
+):
+    """
+    Returns revenue + order count aggregated by period (day/month/year).
+    """
+    from ..models.order import Order
+    from datetime import datetime, timedelta
+
+    now = datetime.now()
+
+    if period == "day":
+        # Last 30 days
+        start = now - timedelta(days=30)
+        date_fmt = func.date_format(Order.created_at, "%Y-%m-%d")
+        label_fmt = func.date_format(Order.created_at, "%d %b")
+    elif period == "month":
+        # Last 12 months
+        start = now - timedelta(days=365)
+        date_fmt = func.date_format(Order.created_at, "%Y-%m")
+        label_fmt = func.date_format(Order.created_at, "%b %Y")
+    else:  # year
+        start = now - timedelta(days=365 * 5)
+        date_fmt = func.date_format(Order.created_at, "%Y")
+        label_fmt = func.date_format(Order.created_at, "%Y")
+
+    rows = (
+        db.query(
+            date_fmt.label("period_key"),
+            label_fmt.label("label"),
+            func.coalesce(func.sum(Order.total_amount), 0).label("revenue"),
+            func.count(Order.id).label("orders"),
+        )
+        .filter(Order.created_at >= start)
+        .group_by("period_key", "label")
+        .order_by("period_key")
+        .all()
+    )
+
+    return {
+        "labels": [r.label for r in rows],
+        "revenue": [float(r.revenue) for r in rows],
+        "orders": [int(r.orders) for r in rows],
+    }
+

@@ -20,12 +20,29 @@ export default function Products() {
     featured: searchParams.get('featured') === 'true' ? true : undefined,
   });
 
-  // Sync URL params & Scroll to top
+  // Sync URL params to internal state (when URL changes via footer/nav)
+  useEffect(() => {
+    const category = searchParams.get('category') || undefined;
+    const search = searchParams.get('search') || undefined;
+    const featured = searchParams.get('featured') === 'true' ? true : undefined;
+
+    if (category !== params.category || search !== params.search || featured !== params.featured) {
+      updateParams({ 
+        category, 
+        search, 
+        featured, 
+        page: params.page // Keep page or reset to 1? Usually reset to 1 if category changes
+      });
+    }
+  }, [searchParams]);
+
+  // Sync internal state to URL params & Scroll to top
   useEffect(() => {
     const p = {};
     if (params.category) p.category = params.category;
     if (params.search) p.search = params.search;
     if (params.featured) p.featured = 'true';
+    if (params.page > 1) p.page = params.page;
     setSearchParams(p, { replace: true });
     
     // Smooth scroll to results top when filters or page change

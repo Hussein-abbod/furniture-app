@@ -1,3 +1,29 @@
+/* ═══════════════════════════════════════════
+   Scroll-reveal animation classes
+   ═══════════════════════════════════════════ */
+.fadeUp,
+.fadeLeft,
+.fadeRight,
+.scaleUp {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.fadeUp    { transform: translateY(40px); }
+.fadeLeft  { transform: translateX(50px); }
+.fadeRight { transform: translateX(-50px); }
+.scaleUp  { transform: scale(0.92) translateY(20px); }
+
+.fadeUp.visible,
+.fadeLeft.visible,
+.fadeRight.visible,
+.scaleUp.visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
 .page { overflow-x: hidden; }
 
 /* ── Hero ───────────────────────────────────────── */

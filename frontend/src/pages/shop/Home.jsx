@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Shield, Truck, RotateCcw } from 'lucide-react';
+import { ArrowRight, Star, Shield, Truck, RotateCcw, Award } from 'lucide-react';
 import { useFeatured, useCategories } from '../../hooks/useProducts';
 import ProductCard from '../../components/shop/ProductCard';
 import SkeletonCard from '../../components/ui/SkeletonCard';
@@ -36,11 +36,16 @@ export default function Home() {
             amplitude={1.6}
             distance={0.2}
             enableMouseInteraction={false}
-            color={[0.1, 0.4, 0.2]} /* Provide a slightly greener tint to match your brand */
+            color={[0.1, 0.4, 0.2]}
           />
         </div>
         <div className={`container ${styles.heroInner}`} style={{ position: 'relative', zIndex: 1 }}>
           <div className={styles.heroText}>
+
+            <div className={styles.heroBadge}>
+              <span className={styles.heroBadgeDot} />
+              New Collection 2026
+            </div>
 
             <h1 className={styles.heroHeading}>
               Design Spaces<br/>
@@ -71,6 +76,15 @@ export default function Home() {
           <div className={styles.heroImages}>
             <div className={styles.imgHero}>
               <img src={heroBg} alt="Modern premium furniture" />
+            </div>
+            <div className={styles.heroFloatingCard}>
+              <div className={styles.heroFloatingIcon}>
+                <Award size={20} />
+              </div>
+              <div>
+                <strong>Award Winning</strong>
+                <span>Best Furniture Design 2026</span>
+              </div>
             </div>
           </div>
         </div>

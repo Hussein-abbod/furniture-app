@@ -67,6 +67,19 @@
   pointer-events: none; /* disabled on desktop */
 }
 
+.colToggleLink {
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.colToggleLink h4 {
+  transition: var(--transition);
+}
+
+.colToggleLink:hover h4 {
+  color: var(--green-300);
+}
+
 .colToggle h4 {
   color: white;
   font-size: .85rem;

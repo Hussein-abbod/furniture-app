@@ -7,7 +7,8 @@ from app.core.database import engine
 from app.core.config import settings
 from app.models import Admin, Product
 from app.core.database import Base
-from app.routers import auth, products, users, cart, favorites, orders
+from app.routers import auth, products, users, cart, favorites, orders, contact
+from app.routers import settings as settings_router
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -26,7 +27,7 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,6 +43,8 @@ app.include_router(users.router)
 app.include_router(cart.router)
 app.include_router(favorites.router)
 app.include_router(orders.router)
+app.include_router(contact.router)
+app.include_router(settings_router.router)
 
 
 @app.get("/api/health")

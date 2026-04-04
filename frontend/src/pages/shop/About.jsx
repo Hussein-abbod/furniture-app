@@ -3,7 +3,22 @@ import {
   Layers, Shield, Clock, Leaf, ArrowRight,
   MapPin, Users, Package, Globe
 } from 'lucide-react';
+import useScrollReveal from '../../hooks/useScrollReveal';
 import styles from './About.module.css';
+
+/* ── Reusable animated wrapper ──────────────────────── */
+function Reveal({ children, animation = 'fadeUp', delay = 0, className = '' }) {
+  const [ref, inView] = useScrollReveal({ threshold: 0.12 });
+  return (
+    <div
+      ref={ref}
+      className={`${styles[animation]} ${inView ? styles.visible : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
 
 const STATS = [
   { num: '9+',   label: 'Years in business',  Icon: Clock   },
@@ -119,163 +134,201 @@ export default function About() {
       {/* ── Hero ──────────────────────────────────── */}
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <span className={styles.eyebrow}>Our story</span>
-          <h1 className={styles.heroH1}>
-            Furniture Built<br />for <em>Generations</em>
-          </h1>
-          <p className={styles.heroP}>
-            Onyx was founded on a single belief — that beautiful furniture should be honest.
-            Honest in its materials, its craft, and its price. We design pieces that outlast
-            trends and outlive expectations.
-          </p>
-          <div className={styles.heroPills}>
-            <span className={styles.pill}><MapPin size={12} /> Est. 2015, Dubai</span>
-            <span className={styles.pill}><Leaf size={12} /> Sustainably sourced</span>
-            <span className={styles.pill}><Globe size={12} /> 18 countries</span>
-          </div>
+          <Reveal animation="fadeUp" delay={0}>
+            <span className={styles.eyebrow}>Our story</span>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={100}>
+            <h1 className={styles.heroH1}>
+              Furniture Built<br />for <em>Generations</em>
+            </h1>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={200}>
+            <p className={styles.heroP}>
+              Onyx was founded on a single belief — that beautiful furniture should be honest.
+              Honest in its materials, its craft, and its price. We design pieces that outlast
+              trends and outlive expectations.
+            </p>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={300}>
+            <div className={styles.heroPills}>
+              <span className={styles.pill}><MapPin size={12} /> Est. 2015, Dubai</span>
+              <span className={styles.pill}><Leaf size={12} /> Sustainably sourced</span>
+              <span className={styles.pill}><Globe size={12} /> 18 countries</span>
+            </div>
+          </Reveal>
         </div>
 
-        <div className={styles.heroVisual}>
-          <div className={styles.hvTall}>
-            <img
-              src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200"
-              alt="Premium furniture"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '22px' }}
-            />
-          </div>
-          <div className={styles.hvStack}>
-            <div className={`${styles.hvSm} ${styles.hvSm1}`}>
+        <Reveal animation="fadeLeft" delay={200}>
+          <div className={styles.heroVisual}>
+            <div className={styles.hvTall}>
               <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"
-                alt="Minimal Scandinavian interior"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }}
+                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200"
+                alt="Premium furniture"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '22px' }}
               />
             </div>
-            <div className={`${styles.hvSm} ${styles.hvSm2}`}>
-              <img
-                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
-                alt="Premium sofa"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }}
-              />
+            <div className={styles.hvStack}>
+              <div className={`${styles.hvSm} ${styles.hvSm1}`}>
+                <img
+                  src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"
+                  alt="Minimal Scandinavian interior"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }}
+                />
+              </div>
+              <div className={`${styles.hvSm} ${styles.hvSm2}`}>
+                <img
+                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"
+                  alt="Premium sofa"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '16px' }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Stats strip ───────────────────────────── */}
       <section className={styles.statsStrip}>
-        {STATS.map(({ num, label, Icon }) => (
-          <div key={label} className={styles.statItem}>
-            <div className={styles.statIconWrap}><Icon size={20} /></div>
-            <div className={styles.statNum}>{num}</div>
-            <div className={styles.statLabel}>{label}</div>
-          </div>
+        {STATS.map(({ num, label, Icon }, i) => (
+          <Reveal key={label} animation="fadeUp" delay={i * 100}>
+            <div className={styles.statItem}>
+              <div className={styles.statIconWrap}><Icon size={20} /></div>
+              <div className={styles.statNum}>{num}</div>
+              <div className={styles.statLabel}>{label}</div>
+            </div>
+          </Reveal>
         ))}
       </section>
 
       {/* ── Story ─────────────────────────────────── */}
       <section className={styles.story}>
         <div className={styles.storyText}>
-          <span className={`badge badge-green ${styles.tag}`}>Who we are</span>
-          <h2 className={styles.storyH2}>
-            We don't make furniture.<br />We make heirlooms.
-          </h2>
-          <p className={styles.storyP}>
-            Onyx began in a small workshop in Dubai in 2015. Two designers, one shared
-            obsession — furniture that earns its place in a home. Not through marketing or
-            trend-chasing, but through the quiet authority of things made exceptionally well.
-          </p>
-          <p className={styles.storyP}>
-            Every joint is hand-checked. Every finish is applied in three coats minimum.
-            Every piece ships with a care card written by the craftsperson who built it.
-            That's not a process — it's a promise.
-          </p>
-          <blockquote className={styles.quote}>
-            "We want people to stop and say — who made this, and how do I get more?"
-          </blockquote>
-          <p className={styles.storyP}>
-            Today we work with 40 artisan partners across 12 countries, all sharing our
-            conviction that the best materials deserve the best hands.
-          </p>
+          <Reveal animation="fadeUp">
+            <span className={`badge badge-green ${styles.tag}`}>Who we are</span>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={100}>
+            <h2 className={styles.storyH2}>
+              We don't make furniture.<br />We make heirlooms.
+            </h2>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={200}>
+            <p className={styles.storyP}>
+              Onyx began in a small workshop in Dubai in 2015. Two designers, one shared
+              obsession — furniture that earns its place in a home. Not through marketing or
+              trend-chasing, but through the quiet authority of things made exceptionally well.
+            </p>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={250}>
+            <p className={styles.storyP}>
+              Every joint is hand-checked. Every finish is applied in three coats minimum.
+              Every piece ships with a care card written by the craftsperson who built it.
+              That's not a process — it's a promise.
+            </p>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={300}>
+            <blockquote className={styles.quote}>
+              "We want people to stop and say — who made this, and how do I get more?"
+            </blockquote>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={350}>
+            <p className={styles.storyP}>
+              Today we work with 40 artisan partners across 12 countries, all sharing our
+              conviction that the best materials deserve the best hands.
+            </p>
+          </Reveal>
         </div>
 
-        <div className={styles.storyVisual}>
-          <div className={styles.storyImgMain}>
-            <img
-              src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200"
-              alt="Our workshop"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '26px' }}
-            />
+        <Reveal animation="fadeLeft" delay={150}>
+          <div className={styles.storyVisual}>
+            <div className={styles.storyImgMain}>
+              <img
+                src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200"
+                alt="Our workshop"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '26px' }}
+              />
+            </div>
+            <div className={styles.storyImgFloat}>
+              <div className={styles.floatNum}>40+</div>
+              <div className={styles.floatLabel}>Artisan partners worldwide</div>
+            </div>
           </div>
-          <div className={styles.storyImgFloat}>
-            <div className={styles.floatNum}>40+</div>
-            <div className={styles.floatLabel}>Artisan partners worldwide</div>
-          </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Values ────────────────────────────────── */}
       <section className={styles.values}>
-        <div className={styles.secHead}>
-          <span className={`badge badge-green ${styles.tagLight}`}>What drives us</span>
-          <h2 className={styles.secH2}>Built on three principles</h2>
-        </div>
+        <Reveal animation="fadeUp">
+          <div className={styles.secHead}>
+            <span className={`badge badge-green ${styles.tagLight}`}>What drives us</span>
+            <h2 className={styles.secH2}>Built on three principles</h2>
+          </div>
+        </Reveal>
         <div className={styles.valuesGrid}>
-          {VALUES.map(({ Icon, title, desc }) => (
-            <div key={title} className={styles.valCard}>
-              <div className={styles.valIcon}><Icon size={22} /></div>
-              <h3 className={styles.valH3}>{title}</h3>
-              <p className={styles.valP}>{desc}</p>
-            </div>
+          {VALUES.map(({ Icon, title, desc }, i) => (
+            <Reveal key={title} animation="scaleUp" delay={i * 120}>
+              <div className={styles.valCard}>
+                <div className={styles.valIcon}><Icon size={22} /></div>
+                <h3 className={styles.valH3}>{title}</h3>
+                <p className={styles.valP}>{desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* ── Team ──────────────────────────────────── */}
       <section className={styles.team}>
-        <div className={styles.teamHead}>
-          <span className={`badge badge-green ${styles.tag}`}>The people</span>
-          <h2 className={styles.secH2} style={{ marginTop: '12px' }}>Meet the founders</h2>
-        </div>
+        <Reveal animation="fadeUp">
+          <div className={styles.teamHead}>
+            <span className={`badge badge-green ${styles.tag}`}>The people</span>
+            <h2 className={styles.secH2} style={{ marginTop: '12px' }}>Meet the founders</h2>
+          </div>
+        </Reveal>
         <div className={styles.teamGrid}>
-          {TEAM.map(({ initials, name, role, bio, color, image }) => (
-            <div key={name} className={styles.teamCard}>
-              <div className={styles.teamAvatar} style={{ background: color }}>
-                {image ? (
-                  <img src={image} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  initials
-                )}
+          {TEAM.map(({ initials, name, role, bio, color, image }, i) => (
+            <Reveal key={name} animation="scaleUp" delay={i * 100}>
+              <div className={styles.teamCard}>
+                <div className={styles.teamAvatar} style={{ background: color }}>
+                  {image ? (
+                    <img src={image} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    initials
+                  )}
+                </div>
+                <div className={styles.teamBody}>
+                  <div className={styles.teamName}>{name}</div>
+                  <div className={styles.teamRole}>{role}</div>
+                  <p className={styles.teamBio}>{bio}</p>
+                </div>
               </div>
-              <div className={styles.teamBody}>
-                <div className={styles.teamName}>{name}</div>
-                <div className={styles.teamRole}>{role}</div>
-                <p className={styles.teamBio}>{bio}</p>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* ── Timeline ──────────────────────────────── */}
       <section className={styles.timeline}>
-        <div className={styles.tlHead}>
-          <span className={styles.tlTag}>Our journey</span>
-          <h2 className={styles.tlH2}>A decade of intention</h2>
-          <p className={styles.tlSub}>Every milestone earned, not rushed.</p>
-        </div>
+        <Reveal animation="fadeUp">
+          <div className={styles.tlHead}>
+            <span className={styles.tlTag}>Our journey</span>
+            <h2 className={styles.tlH2}>A decade of intention</h2>
+            <p className={styles.tlSub}>Every milestone earned, not rushed.</p>
+          </div>
+        </Reveal>
         <div className={styles.tlTrack}>
           <div className={styles.tlLine} />
-          {TIMELINE.map(({ year, title, desc, side }) => (
-            <div key={year} className={`${styles.tlItem} ${side === 'right' ? styles.tlRight : ''}`}>
-              <div className={styles.tlYearWrap}>
-                <div className={styles.tlYear}>{year}</div>
+          {TIMELINE.map(({ year, title, desc, side }, i) => (
+            <Reveal key={year} animation={side === 'left' ? 'fadeRight' : 'fadeLeft'} delay={i * 100}>
+              <div className={`${styles.tlItem} ${side === 'right' ? styles.tlRight : ''}`}>
+                <div className={styles.tlYearWrap}>
+                  <div className={styles.tlYear}>{year}</div>
+                </div>
+                <div className={styles.tlContent}>
+                  <h4 className={styles.tlTitle}>{title}</h4>
+                  <p className={styles.tlDesc}>{desc}</p>
+                </div>
               </div>
-              <div className={styles.tlContent}>
-                <h4 className={styles.tlTitle}>{title}</h4>
-                <p className={styles.tlDesc}>{desc}</p>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -283,41 +336,50 @@ export default function About() {
       {/* ── Sustainability ────────────────────────── */}
       <section className={styles.sustain}>
         <div className={styles.sustainText}>
-          <span className={`badge badge-green ${styles.tag}`}>Sustainability</span>
-          <h2 className={styles.storyH2} style={{ marginTop: '16px' }}>
-            We take the planet<br />as seriously as design.
-          </h2>
-          <p className={styles.storyP}>
-            Every material decision is weighed against its environmental cost.
-            We track, report, and improve — every single year.
-          </p>
-          <p className={styles.storyP}>
-            Our goal is full carbon neutrality by 2027. We're 78% of the way there.
-          </p>
-          <div className={styles.bars}>
-            {SUSTAINABILITY.map(({ label, pct }) => (
-              <div key={label} className={styles.barRow}>
-                <div className={styles.barLabelRow}>
-                  <span className={styles.barName}>{label}</span>
-                  <span className={styles.barPct}>{pct}%</span>
+          <Reveal animation="fadeUp">
+            <span className={`badge badge-green ${styles.tag}`}>Sustainability</span>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={100}>
+            <h2 className={styles.storyH2} style={{ marginTop: '16px' }}>
+              We take the planet<br />as seriously as design.
+            </h2>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={200}>
+            <p className={styles.storyP}>
+              Every material decision is weighed against its environmental cost.
+              We track, report, and improve — every single year.
+            </p>
+            <p className={styles.storyP}>
+              Our goal is full carbon neutrality by 2027. We're 78% of the way there.
+            </p>
+          </Reveal>
+          <Reveal animation="fadeUp" delay={300}>
+            <div className={styles.bars}>
+              {SUSTAINABILITY.map(({ label, pct }) => (
+                <div key={label} className={styles.barRow}>
+                  <div className={styles.barLabelRow}>
+                    <span className={styles.barName}>{label}</span>
+                    <span className={styles.barPct}>{pct}%</span>
+                  </div>
+                  <div className={styles.barTrack}>
+                    <div className={styles.barFill} style={{ width: `${pct}%` }} />
+                  </div>
                 </div>
-                <div className={styles.barTrack}>
-                  <div className={styles.barFill} style={{ width: `${pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         <div className={styles.susTiles}>
-          {SUS_TILES.map(({ num, sub, dark }) => (
-            <div
-              key={num}
-              className={`${styles.susTile} ${dark ? styles.susTileDark : styles.susTileLight}`}
-            >
-              <div className={styles.susTileNum}>{num}</div>
-              <div className={styles.susTileSub}>{sub}</div>
-            </div>
+          {SUS_TILES.map(({ num, sub, dark }, i) => (
+            <Reveal key={num} animation="scaleUp" delay={i * 100}>
+              <div
+                className={`${styles.susTile} ${dark ? styles.susTileDark : styles.susTileLight}`}
+              >
+                <div className={styles.susTileNum}>{num}</div>
+                <div className={styles.susTileSub}>{sub}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -331,21 +393,27 @@ export default function About() {
           backgroundPosition: 'center'
         }}
       >
-        <h2 className={styles.ctaH2}>
-          Ready to find your<br />forever piece?
-        </h2>
-        <p className={styles.ctaP}>
-          Every Onyx product comes with free delivery over $500, a 5-year warranty,
-          and the quiet confidence of something built to last.
-        </p>
-        <div className={styles.ctaBtns}>
-          <Link to="/products" className={`btn btn-primary ${styles.ctaPrimary}`}>
-            Explore the Collection <ArrowRight size={16} />
-          </Link>
-          <Link to="/" className={`btn btn-outline ${styles.ctaOutline}`}>
-            Get in Touch
-          </Link>
-        </div>
+        <Reveal animation="fadeUp">
+          <h2 className={styles.ctaH2}>
+            Ready to find your<br />forever piece?
+          </h2>
+        </Reveal>
+        <Reveal animation="fadeUp" delay={100}>
+          <p className={styles.ctaP}>
+            Every Onyx product comes with free delivery over $500, a 5-year warranty,
+            and the quiet confidence of something built to last.
+          </p>
+        </Reveal>
+        <Reveal animation="fadeUp" delay={200}>
+          <div className={styles.ctaBtns}>
+            <Link to="/products" className={`btn btn-primary ${styles.ctaPrimary}`}>
+              Explore the Collection <ArrowRight size={16} />
+            </Link>
+            <Link to="/contact" className={`btn btn-outline ${styles.ctaOutline}`}>
+              Get in Touch
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
     </div>

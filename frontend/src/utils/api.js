@@ -23,6 +23,8 @@ api.interceptors.response.use(
          // Determine if admin or shop, then redirect
          if (window.location.pathname.startsWith('/admin')) {
              window.location.href = '/admin/login';
+         } else {
+             window.location.href = '/login';
          }
       }
     }
@@ -48,6 +50,7 @@ export const getProduct = (id) => api.get(`/products/${id}`);
 export const getFeaturedProducts = () => api.get('/products/featured');
 export const getCategories = () => api.get('/products/categories');
 export const getStats = () => api.get('/products/admin/stats');
+export const getChartData = (period = 'month') => api.get('/products/admin/chart-data', { params: { period } });
 
 export const createProduct = (data) => api.post('/products', data);
 export const updateProduct = (id, data) => api.put(`/products/${id}`, data);
@@ -78,5 +81,12 @@ export const getMyOrders = () => api.get('/orders');
 export const getOrder = (id) => api.get(`/orders/${id}`);
 export const getAllOrdersAdmin = () => api.get('/orders/admin');
 export const updateOrderStatus = (id, status) => api.put(`/orders/admin/${id}/status`, { status });
+
+// ── Site Settings ─────────────────────────────────────
+export const getSiteSettings = () => api.get('/settings');
+export const updateSiteSettings = (settings) => api.put('/settings', { settings });
+
+// ── Contact ───────────────────────────────────────────
+export const sendContactMessage = (data) => api.post('/contact', data);
 
 export default api;

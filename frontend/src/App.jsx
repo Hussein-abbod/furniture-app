@@ -18,6 +18,7 @@ import Cart from './pages/shop/Cart';
 import Checkout from './pages/shop/Checkout';
 import OrderConfirmation from './pages/shop/OrderConfirmation';
 import About from './pages/shop/About';
+import Contact from './pages/shop/Contact';
 
 // Auth pages
 import Login from './pages/auth/Login';
@@ -34,6 +35,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminProductForm from './pages/admin/AdminProductForm';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminSettings from './pages/admin/AdminSettings';
 
 export default function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
@@ -69,6 +71,7 @@ export default function App() {
                   <Route path="/products/:id" element={<ProductDetail />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
                   
                   {/* User protected */}
                   <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
@@ -97,6 +100,7 @@ export default function App() {
                   <Route path="products/new" element={<AdminProductForm />} />
                   <Route path="products/:id/edit" element={<AdminProductForm />} />
                   <Route path="orders" element={<AdminOrders />} />
+                  <Route path="settings" element={<AdminSettings />} />
                 </Route>
 
                 {/* Catch-all */}

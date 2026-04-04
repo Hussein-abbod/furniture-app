@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "uploads"
     MAX_FILE_SIZE: int = 5 * 1024 * 1024  # 5MB
     GOOGLE_CLIENT_ID: Optional[str] = None
+    ENVIRONMENT: str = "development"
+    SMTP_EMAIL: Optional[str] = None
+    SMTP_APP_PASSWORD: Optional[str] = None
 
     class Config:
         env_file = ".env"

@@ -6,6 +6,7 @@ import styles from './Auth.module.css';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import logo from '../../assets/images/onyx-logo.png';
 
 export default function Signup() {
   const [form, setForm] = useState({ full_name: '', email: '', password: '', confirm_password: '' });
@@ -77,6 +78,10 @@ export default function Signup() {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.header}>
+          <Link to="/" className={styles.header}>
+            <img src={logo} alt="Onyx Logo" className={styles.logo} />
+            <span className={styles.brandName}>ONYX</span>
+          </Link>
           <h2>Create Account</h2>
           <p>Join Onyx for exclusive access</p>
         </div>
@@ -106,21 +111,21 @@ export default function Signup() {
 
           <div className={styles.formGroup}>
             <label>Password</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div className={styles.passwordWrapper}>
               <input
                 type={showPassword ? "text" : "password"}
                 required
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Min 6 characters"
-                style={{ width: '100%', paddingRight: '2.5rem' }}
               />
               <button 
                 type="button" 
+                className={styles.eyeToggleButton} 
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '0.75rem', background: 'none', border: 'none', cursor: 'pointer', color: '#666', display: 'flex' }}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
             {form.password && (
@@ -132,21 +137,21 @@ export default function Signup() {
 
           <div className={styles.formGroup}>
             <label>Confirm Password</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div className={styles.passwordWrapper}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 required
                 value={form.confirm_password}
                 onChange={(e) => setForm({ ...form, confirm_password: e.target.value })}
                 placeholder="Confirm password"
-                style={{ width: '100%', paddingRight: '2.5rem' }}
               />
               <button 
                 type="button" 
+                className={styles.eyeToggleButton} 
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={{ position: 'absolute', right: '0.75rem', background: 'none', border: 'none', cursor: 'pointer', color: '#666', display: 'flex' }}
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
               >
-                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>

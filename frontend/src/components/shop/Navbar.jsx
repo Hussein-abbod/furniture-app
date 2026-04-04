@@ -55,9 +55,15 @@ export default function Navbar() {
   const links = [
     { to: '/', label: 'Home' },
     { to: '/products', label: 'Shop' },
-    { to: '/products?category=Living Room', label: 'Living Room' },
     { to: '/about', label: 'About' },
+    { to: '/contact', label: 'Contact' },
   ];
+
+  /* Check if a link is active */
+  const isActive = (to) => {
+    if (to === '/') return pathname === '/';
+    return pathname.startsWith(to);
+  };
 
   return (
     <>
@@ -75,9 +81,10 @@ export default function Navbar() {
               <li key={l.to}>
                 <Link
                   to={l.to}
-                  className={`${styles.link} ${pathname === l.to ? styles.active : ''}`}
+                  className={`${styles.link} ${isActive(l.to) ? styles.active : ''}`}
                 >
                   {l.label}
+                  <span className={styles.linkUnderline} />
                 </Link>
               </li>
             ))}
@@ -162,7 +169,7 @@ export default function Navbar() {
                 <Link
                   key={l.to}
                   to={l.to}
-                  className={`${styles.mobileLink} ${pathname === l.to ? styles.mobileLinkActive : ''}`}
+                  className={`${styles.mobileLink} ${isActive(l.to) ? styles.mobileLinkActive : ''}`}
                 >
                   {l.label}
                 </Link>
