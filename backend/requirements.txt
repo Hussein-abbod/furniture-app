@@ -13,3 +13,4 @@ pillow==10.3.0
 aiofiles==23.2.1
 google-auth
 requests
+gunicorn==22.0.0
