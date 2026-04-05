@@ -10,7 +10,7 @@ def set_auth_cookie(response: Response, token: str):
         key="access_token",
         value=token,
         httponly=True,
-        samesite="lax",
+        samesite="none" if is_production else "lax",
         secure=is_production,
     )
 
@@ -18,9 +18,10 @@ def clear_auth_cookie(response: Response):
     """
     Clears the authentication cookie.
     """
+    is_production = getattr(settings, "ENVIRONMENT", "development") == "production"
     response.delete_cookie(
         key="access_token",
         httponly=True,
-        samesite="lax",
-        secure=False,
+        samesite="none" if is_production else "lax",
+        secure=is_production,
     )
