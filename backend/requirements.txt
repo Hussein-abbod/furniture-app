@@ -14,3 +14,4 @@ aiofiles==23.2.1
 google-auth
 requests
 gunicorn==22.0.0
+cloudinary

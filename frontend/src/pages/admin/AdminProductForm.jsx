@@ -63,8 +63,9 @@ export default function AdminProductForm() {
       const { data } = await uploadImage(file);
       setForm(f => ({ ...f, image_url: data.image_url }));
       toast.success('Image uploaded — drag the preview to adjust crop');
-    } catch {
-      toast.error('Upload failed — check file size (max 5MB)');
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Upload failed — please check your connection or image format';
+      toast.error(msg);
     } finally {
       setUploading(false);
     }

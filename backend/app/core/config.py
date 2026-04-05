@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     SMTP_EMAIL: Optional[str] = None
     SMTP_APP_PASSWORD: Optional[str] = None
     FRONTEND_URL: Optional[str] = None
+    BACKEND_URL: str = "http://localhost:8000"
+    CLOUDINARY_URL: Optional[str] = None
 
     class Config:
         env_file = ".env"

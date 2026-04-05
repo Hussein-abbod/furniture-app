@@ -4,13 +4,14 @@ from sqlalchemy import or_, func
 from typing import Optional, List
 import os, uuid
 import aiofiles
+import cloudinary
+import cloudinary.uploader
 from ..core.database import get_db
 from ..core.security import get_current_admin
 from ..core.config import settings
 from ..models.product import Product
 from ..models.admin import Admin
 from ..schemas.schemas import ProductCreate, ProductUpdate, ProductResponse, ProductListResponse
-
 router = APIRouter(prefix="/api/products", tags=["Products"])
 
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
@@ -137,6 +138,31 @@ async def upload_image(
     if len(content) > settings.MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail="File too large (max 5MB)")
 
+    if settings.CLOUDINARY_URL:
+        # Configuration for Cloudinary (Set manually for maximum reliability)
+        try:
+            # Format: cloudinary://api_key:api_secret@cloud_name
+            url_part = settings.CLOUDINARY_URL.replace("cloudinary://", "")
+            auth_part, cloud_name = url_part.split("@")
+            api_key, api_secret = auth_part.split(":")
+            
+            cloudinary.config(
+                cloud_name=cloud_name,
+                api_key=api_key,
+                api_secret=api_secret,
+                secure=True
+            )
+            
+            # Upload to Cloudinary
+            upload_result = cloudinary.uploader.upload(content, folder="furniture_app")
+            return {"image_url": upload_result.get("secure_url")}
+            
+        except Exception as e:
+            print(f"Cloudinary Config/Upload Error: {str(e)}")
+            # If parsing fails or upload fails, give a clear message
+            raise HTTPException(status_code=500, detail=f"Cloudinary Error: {str(e)}")
+
+    # Fallback to local storage
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     ext = file.filename.rsplit(".", 1)[-1].lower()
     filename = f"{uuid.uuid4()}.{ext}"
@@ -145,7 +171,9 @@ async def upload_image(
     async with aiofiles.open(filepath, "wb") as f:
         await f.write(content)
 
-    return {"image_url": f"/uploads/{filename}"}
+    # Return full URL for local too
+    base_url = settings.BACKEND_URL.rstrip('/')
+    return {"image_url": f"{base_url}/uploads/{filename}"}
 
 
 @router.get("/admin/stats")
