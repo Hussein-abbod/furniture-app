@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     SMTP_EMAIL: Optional[str] = None
     SMTP_APP_PASSWORD: Optional[str] = None
+    FRONTEND_URL: Optional[str] = None
 
     class Config:
         env_file = ".env"
