@@ -5,37 +5,46 @@ import toast from 'react-hot-toast';
 import styles from './Account.module.css';
 
 export default function EditProfile() {
-  const { user, setUser } = useAuth();
-  const [form, setForm] = useState({
-    full_name: user?.username || '',
-    email: user?.email || '',
-    password: '',
-    address: '',
-    city: '',
-    country: '',
-    phone: ''
-  });
+  const { user, setUser, profile, setProfile } = useAuth();
+  const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
+  const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
+    // If profile is already cached, use it immediately — no network request
+    if (profile) {
+      setForm({
+        full_name: profile.full_name || profile.username || '',
+        email: profile.email || '',
+        password: '',
+        address: profile.address || '',
+        city: profile.city || '',
+        country: profile.country || '',
+        phone: profile.phone || '',
+      });
+      return;
+    }
+
+    // First visit: fetch from server and store in cache
+    setFetching(true);
     getProfile()
       .then(({ data }) => {
-        setForm(prev => ({
-          ...prev,
+        setProfile(data);
+        setForm({
           full_name: data.full_name || data.username || '',
           email: data.email || '',
+          password: '',
           address: data.address || '',
           city: data.city || '',
           country: data.country || '',
-          phone: data.phone || ''
-        }));
+          phone: data.phone || '',
+        });
       })
       .catch((err) => {
         console.error('Failed to load profile', err);
       })
       .finally(() => setFetching(false));
-  }, []);
+  }, []); // runs once per mount, but cache prevents redundant fetches
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,9 +67,11 @@ export default function EditProfile() {
 
     try {
       const { data } = await updateProfile(payload);
+      // Update both the auth user and the profile cache
       setUser({ username: data.full_name || data.username, email: data.email });
+      setProfile(data); // update cache with fresh server data
       toast.success('Profile updated successfully');
-      setForm({ ...form, password: '' }); // Clear password field
+      setForm((prev) => ({ ...prev, password: '' })); // clear password field only
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Update failed');
     } finally {
@@ -68,7 +79,7 @@ export default function EditProfile() {
     }
   };
 
-  if (fetching) return <p>Loading profile...</p>;
+  if (fetching || !form) return <p>Loading profile...</p>;
 
   return (
     <>
