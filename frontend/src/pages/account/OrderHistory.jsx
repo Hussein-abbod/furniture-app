@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { getMyOrders } from '../../utils/api';
+import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { PackageOpen } from 'lucide-react';
 import styles from './Account.module.css';
 
 export default function OrderHistory() {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { orders, setOrders } = useAuth();
+  const [loading, setLoading] = useState(!orders); // skip loading if already cached
 
   useEffect(() => {
+    // If orders are already cached, skip fetching
+    if (orders !== null) return;
+
+    setLoading(true);
     getMyOrders()
       .then(({ data }) => setOrders(data))
       .catch(console.error)
@@ -17,7 +22,9 @@ export default function OrderHistory() {
 
   if (loading) return <p>Loading orders...</p>;
 
-  if (orders.length === 0) {
+  const orderList = orders || [];
+
+  if (orderList.length === 0) {
     return (
       <div className="text-center py-10" style={{ color: '#666' }}>
         <PackageOpen size={48} className="mx-auto mb-4" color="#ccc" />
@@ -40,7 +47,7 @@ export default function OrderHistory() {
       <h2 className={styles.pageTitle}>Order History</h2>
       
       <div className={styles.ordersList}>
-        {orders.map(order => {
+        {orderList.map(order => {
           const sc = statusColors[order.status] || { bg: '#eee', color: '#333' };
           
           return (

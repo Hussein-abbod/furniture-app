@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null); // cached profile data
+  const [orders, setOrders] = useState(null);   // cached orders data
 
   // Check cookie session on mount
   useEffect(() => {
@@ -31,6 +32,7 @@ export function AuthProvider({ children }) {
     setUser({ username: data.username, email: data.email });
     setRole(data.role);
     setProfile(null); // clear cached profile on new login
+    setOrders(null);  // clear cached orders on new login
     return data;
   }, []);
 
@@ -40,6 +42,7 @@ export function AuthProvider({ children }) {
     setUser({ username: data.username, email: data.email });
     setRole(data.role);
     setProfile(null); // clear cached profile on new login
+    setOrders(null);  // clear cached orders on new login
     return data;
   }, []);
 
@@ -52,6 +55,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     setRole(null);
     setProfile(null); // clear cached profile on logout
+    setOrders(null);  // clear cached orders on logout
   }, []);
 
   return (
@@ -68,6 +72,8 @@ export function AuthProvider({ children }) {
       loading,
       profile,
       setProfile,
+      orders,
+      setOrders,
     }}>
       {!loading && children}
     </AuthContext.Provider>
