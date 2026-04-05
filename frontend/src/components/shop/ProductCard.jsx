@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, Heart } from 'lucide-react';
 import styles from './ProductCard.module.css';
@@ -5,7 +6,7 @@ import { useFavorites } from '../../context/FavoritesContext';
 
 const FALLBACK = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
 
-export default function ProductCard({ product }) {
+const ProductCard = forwardRef(function ProductCard({ product, revealed = true, style, ...rest }, ref) {
   const { id, name, price, image_url, category, stock } = product;
   const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -18,8 +19,15 @@ export default function ProductCard({ product }) {
     toggleFavorite(id);
   };
 
+  const cardClasses = [
+    styles.card,
+    styles.scrollReveal,
+    revealed && styles.revealed,
+    outOfStock && styles.cardDisabled,
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className={`${styles.card} ${outOfStock ? styles.cardDisabled : ''}`}>
+    <div ref={ref} className={cardClasses} style={style} {...rest}>
       <Link to={`/products/${id}`} className={styles.imageWrap}>
         <img
           src={image_url || FALLBACK}
@@ -74,4 +82,6 @@ export default function ProductCard({ product }) {
       </div>
     </div>
   );
-}
+});
+
+export default ProductCard;

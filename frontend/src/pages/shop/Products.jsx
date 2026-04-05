@@ -5,6 +5,7 @@ import { useProducts, useCategories } from '../../hooks/useProducts';
 import ProductCard from '../../components/shop/ProductCard';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import Pagination from '../../components/ui/Pagination';
+import useScrollRevealCards from '../../hooks/useScrollRevealCards';
 import styles from './Products.module.css';
 
 export default function Products() {
@@ -12,6 +13,7 @@ export default function Products() {
   const categories = useCategories();
   const [showFilters, setShowFilters] = useState(false);
   const [searchInput, setSearchInput] = useState(searchParams.get('search') || '');
+  const { setCardRef, visibleSet } = useScrollRevealCards({ staggerMs: 70 });
 
   const { products, total, totalPages, loading, params, updateParams } = useProducts({
     page: 1, page_size: 12,
@@ -185,7 +187,15 @@ export default function Products() {
               </div>
             ) : (
               <div className={styles.grid}>
-                {products.map(p => <ProductCard key={p.id} product={p} />)}
+                {products.map((p, i) => (
+                  <ProductCard
+                    key={p.id}
+                    product={p}
+                    ref={setCardRef(i)}
+                    data-card-index={i}
+                    revealed={visibleSet.has(i)}
+                  />
+                ))}
               </div>
             )}
 

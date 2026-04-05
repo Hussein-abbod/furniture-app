@@ -7,6 +7,7 @@ import styles from './Home.module.css';
 import Threads from '../../components/ui/Threads';
 import heroBg from '../../assets/images/handcrafted-wooden-decorative-sculpture.jpg';
 import FeaturesCarousel from '../../components/ui/FeaturesCarousel';
+import useScrollRevealCards from '../../hooks/useScrollRevealCards';
 import { useState, useEffect, useRef } from 'react';
 
 const CATEGORY_IMAGES = {
@@ -28,6 +29,7 @@ const PERKS = [
 export default function Home() {
   const { products, loading } = useFeatured();
   const categories = useCategories();
+  const { setCardRef, visibleSet } = useScrollRevealCards({ staggerMs: 90 });
   
   const [visibleCategories, setVisibleCategories] = useState(new Set());
   const categoryRefs = useRef([]);
@@ -201,7 +203,15 @@ export default function Home() {
           <div className={styles.productsGrid}>
             {loading
               ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-              : products.slice(0, 8).map(p => <ProductCard key={p.id} product={p} />)
+              : products.slice(0, 8).map((p, i) => (
+                  <ProductCard
+                    key={p.id}
+                    product={p}
+                    ref={setCardRef(i)}
+                    data-card-index={i}
+                    revealed={visibleSet.has(i)}
+                  />
+                ))
             }
           </div>
         </div>
