@@ -10,7 +10,7 @@ def set_auth_cookie(response: Response, token: str):
         key="access_token",
         value=token,
         httponly=True,
-        samesite="none" if is_production else "lax",
+        samesite="lax",
         secure=is_production,
     )
 
@@ -22,6 +22,6 @@ def clear_auth_cookie(response: Response):
     response.delete_cookie(
         key="access_token",
         httponly=True,
-        samesite="none" if is_production else "lax",
+        samesite="lax",
         secure=is_production,
     )
