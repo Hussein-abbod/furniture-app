@@ -110,9 +110,7 @@ async def send_contact_email(data: ContactRequest):
     msg.attach(MIMEText(_build_html(data), "html"))
 
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.ehlo()
-            server.starttls()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.ehlo()
             server.login(settings.SMTP_EMAIL, settings.SMTP_APP_PASSWORD)
             server.send_message(msg)
