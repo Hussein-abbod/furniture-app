@@ -2,6 +2,7 @@
 Contact form endpoint — sends email via Gmail SMTP.
 """
 
+import asyncio
 import smtplib
 import logging
 from email.mime.text import MIMEText
@@ -80,6 +81,14 @@ def _build_html(data: ContactRequest) -> str:
     """
 
 
+def _send_email_sync(smtp_email: str, smtp_password: str, msg: MIMEMultipart):
+    """Blocking SMTP call — must be run in a thread pool to avoid freezing the event loop."""
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.ehlo()
+        server.login(smtp_email, smtp_password)
+        server.send_message(msg)
+
+
 @router.post("")
 async def send_contact_email(data: ContactRequest):
     """
@@ -110,11 +119,10 @@ async def send_contact_email(data: ContactRequest):
     msg.attach(MIMEText(_build_html(data), "html"))
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.ehlo()
-            server.login(settings.SMTP_EMAIL, settings.SMTP_APP_PASSWORD)
-            server.send_message(msg)
-
+        # Run blocking SMTP call in a thread pool so the async event loop is never blocked
+        await asyncio.get_event_loop().run_in_executor(
+            None, _send_email_sync, settings.SMTP_EMAIL, settings.SMTP_APP_PASSWORD, msg
+        )
         logger.info("Contact email sent from %s (%s)", data.name, data.email)
         return {"message": "Your message has been sent successfully!"}
 
