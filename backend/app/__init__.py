@@ -1,1 +1,1 @@
-# Maison Furniture Store — FastAPI Backend
+# Onyx Furniture Store — FastAPI Backend

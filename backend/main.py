@@ -18,7 +18,7 @@ os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI(
     title="Furniture Store API",
-    description="Backend API for the Maison Furniture e-commerce platform",
+    description="Backend API for the Onyx Furniture e-commerce platform",
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
@@ -55,4 +55,4 @@ app.include_router(settings_router.router)
 
 @app.get("/api/health")
 async def health():
-    return {"status": "healthy", "app": "Maison Furniture API"}
+    return {"status": "healthy", "app": "Onyx Furniture API"}
