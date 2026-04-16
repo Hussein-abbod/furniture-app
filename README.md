@@ -217,26 +217,6 @@ npm run dev
 ```
 > App: [http://localhost:5173](http://localhost:5173)
 
----
-
-## 🌐 Deployment
-
-### Frontend — Vercel
-The frontend includes a `vercel.json` for seamless SPA routing on **Vercel**.
-
-### Backend & Database — Azure
-1. **Backend**: Hosted on **Azure App Service (Linux)**.
-2. **Database**: Hosted on **Azure Database for MySQL (Flexible Server)**.
-
-### Production Environment Variables
-| Variable | Description |
-|----------|-------------|
-| `VITE_API_URL` | Backend URL for the frontend. |
-| `DATABASE_URL` | MySQL connection string for the backend. |
-| `SECRET_KEY` | JWT signing key. |
-
----
-
 ## 🔑 Default Credentials (Local)
 
 | Field    | Value      |
