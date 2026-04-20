@@ -13,6 +13,22 @@ A full-stack furniture e-commerce application built with **FastAPI**, **React**,
 
 ---
 
+## 🌐 Live Demo
+
+**[🔗 Visit Onyx Live Demo](https://onyx-theta-five.vercel.app/)**
+
+> ⚠️ **Note:** The backend API is hosted on Render's free tier. It may take 1-2 minutes for the server to "wake up" after a period of inactivity. Please be patient when first loading the site!
+
+---
+
+## 📸 Screenshots
+
+### Admin Dashboard
+![Admin Dashboard](admin-dashboard.png)
+
+
+---
+
 ## ✨ Features
 
 - **🛍️ Premium Shopping Experience**:
