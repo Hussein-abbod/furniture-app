@@ -2,6 +2,15 @@
 
 A full-stack furniture e-commerce application built with **FastAPI**, **React**, and **MySQL**. Designed with a premium aesthetic, featuring a seamless shopping experience, user accounts, and a robust admin dashboard.
 
+<p align="center">
+  <img src="https://img.shields.io/badge/STATUS-ACTIVE-brightgreen?style=for-the-badge&labelColor=555555" alt="Status: Active"/>
+  <img src="https://img.shields.io/badge/VERSION-1.2.0-2196F3?style=for-the-badge&labelColor=555555" alt="Version: 1.2.0"/>
+  <img src="https://img.shields.io/badge/PYTHON-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=555555" alt="Python 3.10+"/>
+  <img src="https://img.shields.io/badge/REACT-18-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=555555" alt="React 18"/>
+  <img src="https://img.shields.io/badge/FASTAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=555555" alt="FastAPI 0.100+"/>
+  <img src="https://img.shields.io/badge/LICENSE-MIT-4CAF50?style=for-the-badge&labelColor=555555" alt="License: MIT"/>
+</p>
+
 ---
 
 ## ✨ Features
