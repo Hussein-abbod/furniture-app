@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, Package, Plus, LogOut,
-  Menu, X, ChevronRight, ClipboardList, Settings
+  Menu, X, ChevronRight, ClipboardList, Settings, UserCog
 } from 'lucide-react';
 import onyxLogo from '../../assets/images/onyx-logo.png';
 import styles from './AdminLayout.module.css';
@@ -14,6 +14,7 @@ const NAV = [
   { to: '/admin/products',  icon: Package,         label: 'Products' },
   { to: '/admin/products/new', icon: Plus,         label: 'Add Product' },
   { to: '/admin/settings',     icon: Settings,      label: 'Settings' },
+  { to: '/admin/account',      icon: UserCog,       label: 'My Account' },
 ];
 
 export default function AdminLayout() {
@@ -74,13 +75,13 @@ export default function AdminLayout() {
 
         <div className={styles.sidebarBottom}>
           {!collapsed && (
-            <div className={styles.adminBadge}>
+            <Link to="/admin/account" className={styles.adminBadge}>
               <div className={styles.avatar}>{admin?.username?.[0]?.toUpperCase()}</div>
               <div>
                 <div className={styles.adminName}>{admin?.username}</div>
                 <div className={styles.adminRole}>Administrator</div>
               </div>
-            </div>
+            </Link>
           )}
           <button className={styles.logoutBtn} onClick={handleLogout}>
             <LogOut size={18} />

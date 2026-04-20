@@ -36,6 +36,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminProductForm from './pages/admin/AdminProductForm';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminAccount from './pages/admin/AdminAccount';
 
 export default function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
@@ -101,6 +102,7 @@ export default function App() {
                   <Route path="products/:id/edit" element={<AdminProductForm />} />
                   <Route path="orders" element={<AdminOrders />} />
                   <Route path="settings" element={<AdminSettings />} />
+                  <Route path="account" element={<AdminAccount />} />
                 </Route>
 
                 {/* Catch-all */}

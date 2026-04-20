@@ -72,6 +72,10 @@ class AdminCreate(BaseModel):
     password: str = Field(..., min_length=6)
     email: Optional[str] = None
 
+class AdminUpdate(BaseModel):
+    username: Optional[str] = Field(None, min_length=3, max_length=100)
+    password: Optional[str] = Field(None, min_length=6)
+
 
 class AdminResponse(BaseModel):
     id: int

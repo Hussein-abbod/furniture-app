@@ -1,0 +1,227 @@
+/* ═══════════════════════════════════════════
+   Admin Account Page
+   ═══════════════════════════════════════════ */
+
+.page {
+  max-width: 860px;
+}
+
+/* ── Spinner ─────────────────────────────── */
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Header ─────────────────────────────── */
+.header {
+  margin-bottom: 28px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.headerIcon {
+  color: var(--green-700);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.sub {
+  font-size: 0.88rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* ── Profile badge ───────────────────────── */
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 28px;
+  background: linear-gradient(135deg, var(--green-900), #1a5c46);
+  border-radius: 16px;
+  margin-bottom: 28px;
+  color: white;
+}
+
+.avatarLarge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  border: 2px solid rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+.badgeName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.badgeRole {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-top: 3px;
+}
+
+/* ── Two-column grid ─────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Card ────────────────────────────────── */
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 22px 26px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cardIcon {
+  color: var(--green-700);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.cardHeader h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.cardHeader p {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 3px;
+}
+
+/* ── Fields ──────────────────────────────── */
+.fields {
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Input with icon ─────────────────────── */
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: #bbb;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 11px 44px 11px 40px;
+  border: 1.5px solid #e4e4e4;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: #333;
+  background: #fafbfc;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(12, 59, 46, 0.06);
+  background: white;
+}
+
+.input::placeholder {
+  color: #bbb;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color 0.2s;
+}
+.eyeBtn:hover {
+  color: var(--green-700);
+}
+
+/* ── Validation ──────────────────────────── */
+.mismatch {
+  font-size: 0.78rem;
+  color: #dc3545;
+  margin-top: 2px;
+}
+
+/* ── Card footer ─────────────────────────── */
+.cardFooter {
+  padding: 16px 26px 22px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}

@@ -1,18 +1,47 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from sqlalchemy.orm import Session
 from ..core.database import get_db
-from ..core.security import verify_password, create_access_token, get_password_hash
+from ..core.security import verify_password, create_access_token, get_password_hash, get_current_admin
 from ..core.cookies import set_auth_cookie, clear_auth_cookie
 from ..core.rate_limit import rate_limit_login
 from ..models.admin import Admin
 from ..models.user import User
-from ..schemas.schemas import LoginRequest, SignupRequest, GoogleLoginRequest
+from ..schemas.schemas import LoginRequest, SignupRequest, GoogleLoginRequest, AdminUpdate, AdminResponse
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from ..core.config import settings
 import string
 import secrets
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
+
+@router.put("/admin/account", response_model=AdminResponse)
+async def update_admin_account(
+    update_data: AdminUpdate,
+    response: Response,
+    db: Session = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin)
+):
+    if update_data.username is not None:
+        if current_admin.username != update_data.username:
+            existing = db.query(Admin).filter(Admin.username == update_data.username).first()
+            if existing:
+                raise HTTPException(status_code=400, detail="Username already taken")
+            current_admin.username = update_data.username
+            
+    if update_data.password is not None:
+        if len(update_data.password) < 6:
+            raise HTTPException(status_code=400, detail="Password too short")
+        current_admin.password_hash = get_password_hash(update_data.password)
+
+    db.commit()
+    db.refresh(current_admin)
+    
+    # Reissue token since username (sub) might have changed
+    token = create_access_token(data={"sub": current_admin.username, "role": "admin"})
+    set_auth_cookie(response, token)
+    
+    return current_admin
+
 
 @router.post("/login")
 async def login(
